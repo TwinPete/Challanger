@@ -43,7 +43,7 @@ return [
             'driver' => 'mysql',
             'host' => '127.0.0.1',//env('DB_HOST', '127.0.0.1'),
             'port' => '3306',//env('DB_PORT', '3306'),
-            'database' => 'SocialNetwork',//env('DB_DATABASE', 'forge'),
+            'database' => 'challanger',//env('DB_DATABASE', 'forge'),
             'username' => 'root',//env('DB_USERNAME', 'forge'),
             'password' => '',//env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),

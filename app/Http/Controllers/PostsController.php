@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
+use DB;
 
 class PostsController extends Controller
 {
@@ -34,7 +36,35 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'text' => 'required',
+            'media' => 'required|image|max:1999',
+        ]);
+
+        If($request->hasFile('media')){
+
+            $fileNameWithExt = $request->file('media')->getClientOriginalName();
+            // Get just Filename
+            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            // Get just ext
+            $extension = $request->file('media')->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            // Upload the Image
+            $path = $request->file('media')->storeAs('public/postMedia', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'random.jpg';
+        }
+
+        $post = new Post;
+        $post->userId = auth()->user()->id;
+        $post->title = $request->input('title');
+        $post->text = $request->input('text');
+        $post->media = $fileNameToStore;
+        $post->save();
+
+        return redirect('/profile');
     }
 
     /**

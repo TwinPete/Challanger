@@ -27,7 +27,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/profile';
 
     /**
      * Create a new controller instance.
@@ -48,12 +48,17 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'location' => 'required|string|max:255',
+            'place' => 'required|string|max:255',
+            'userPic' => 'required|image|max:1999',
         ]);
+
+        
+
     }
+    
 
     /**
      * Create a new user instance after a valid registration.
@@ -63,11 +68,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        // Handle File Upload
+        If(true){
+            $fileNameWithExt = $data['userPic']->getClientOriginalName();
+            // Get just Filename
+            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            // Get just ext
+            $extension = $data['userPic']->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            // Upload the Image
+            $path = $data['userPic']->storeAs('public/userPics', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'random.jpg';
+        }
+
+
+
         return User::create([
-            'name' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'location' => $data['location'],
+            'place' => $data['place'],
+            'userPic' => $fileNameToStore,
         ]);
     }
 }
