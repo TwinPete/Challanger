@@ -15,15 +15,17 @@
 
                     You are logged in!
 
-                    <!--<form action="/createPost" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="text" name="title" >
-                        <textarea name="text" id="" cols="30" rows="10"></textarea>
-                        <input type="file" name="media">
-                        <input type="submit">
-                    </form>-->
-                        
+                    <br>
+                    <br> 
+                    <br>
+                    <br>
+                    <br> 
+                    <br>  
                     <h1>Create Post</h1>
+                    <br>
+                    <br> 
+                    <br>
+
                     <?php echo Form::open(['action' => 'PostsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']); ?>
 
                         <?php echo e(Form::label('title', 'Title')); ?>
@@ -42,9 +44,37 @@
 
                     <?php echo Form::close(); ?>
 
-                    
-                    
+                    <br>
+                    <br> 
+                    <br>
+                    <h1>Create Challange</h1>
+                    <br>
+                    <br> 
+                    <br>
+                    <?php echo Form::open(['action' => 'ChallangesController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']); ?>
+
+                        <?php echo e(Form::label('title', 'Title')); ?>
+
+                        <?php echo e(Form::text('title', '')); ?>
+
+                        <?php echo e(Form::label('text', 'Text')); ?>
+
+                        <?php echo e(Form::text('text', '')); ?>
+
+                        <?php echo e(Form::submit('Submit')); ?>
+
+                    <?php echo Form::close(); ?>
+
+                    <br>
+                    <br> 
+                    <br>
+                    <br>
+                    <br> 
+                    <br>
+
                     <img src="/storage/userPics/<?php echo e($user->userPic); ?>" height:="auto" width="300px"/>
+
+                    
                 </div>
             </div>
         </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Post;
+use DB;
 
 class ProfileController extends Controller
 {
@@ -26,7 +28,7 @@ class ProfileController extends Controller
     {
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
-        return view('profile')->with('posts', $user->posts)->with('user', $user);
-        // return view('profile');
+        $posts = Post::where('userId', $user_id);
+        return view('profile')->with('posts', $posts)->with('user', $user);
     }
 }

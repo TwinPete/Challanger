@@ -1,0 +1,598 @@
+* {
+    margin: 0;
+    padding: 0; }
+  
+html {
+    font-size: 10px; 
+}
+  
+body {
+    font-size: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    background-color: #fafafa;
+    height: 100vh;
+    width: 100%;
+    color: #444; 
+}
+
+#header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 6rem;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 1px 3px 2px rgb(228, 228, 228);
+    z-index: 10;
+    background-color: rgb(57, 63, 67);
+    /* background-color: rgb(78, 130, 194);
+    background-color: rgb(225, 120, 119); */
+    color: #fff;
+}
+
+#header img{
+    position: absolute;
+    top: 0.7rem;
+    left: 3rem;
+    width: 18rem;
+    height: 4rem;
+}
+
+#header #searchbar{
+    display: flex;
+    justify-content: center;
+    margin-top: 1.3rem;
+    width: auto;
+    height: auto;
+    background-color: none;
+    border-radius: 10px;
+    
+}
+
+#header #searchbar input{
+   height: 3rem;
+   width: 45rem;
+   border: solid 1px rgb(220, 220, 220);
+   border: solid 1px rgb(73, 81, 85);
+   border-top-left-radius: 10px;
+   border-bottom-left-radius: 10px;
+   font-size: 1.6rem;
+   color: #333;
+   color: rgb(218, 218, 218);
+   padding: 0.2rem;
+   padding-left: 2rem;
+   outline: none;
+   background-color: rgb(44, 49, 52);
+   /* background-color: rgb(70, 116, 172);
+   background-color: rgb(225, 120, 119);
+   background-color: #fff; */
+   border: none;
+}
+
+#header #searchbar #searchbutton{
+    float: right;
+}
+
+#header #searchbar #searchbutton{
+    position: relative;
+    height: 3.4rem;
+    width: 3.4rem;
+    border: solid 1px rgb(220, 220, 220);
+    border: solid 1px rgb(73, 81, 85);
+    border-left: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: none;
+    background-color: rgb(206, 206, 206);
+}
+
+#header #searchbar #searchbutton img{
+    position:  absolute;
+    top: 0.6rem;
+    left: 0.4rem;
+    height: 2.3rem;
+    width: 2.3rem;
+    opacity: 0.8;
+}
+
+#header ul{
+    position: absolute;
+    right: 2rem;
+    top: 1.3rem;
+    list-style: none;
+}
+
+#header ul li{
+    float: left;
+    padding: 1rem;
+    width: auto;
+    text-align: center;
+    font-size: 1.8rem;
+    margin-right: 2rem;
+}
+
+#menu{
+    position: fixed;
+    top: 6.3rem;
+    left: 0;
+    height: auto;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 4rem;
+    z-index: 9;
+    box-shadow: 1px 1px 3px 2px rgb(228, 228, 228);
+}
+
+#menu ul{
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    list-style: none;
+    background-color: aquamarine;
+}
+
+#menu ul li{
+    text-align: center;
+    float: left;
+    padding: 1.6rem;
+    font-size: 2rem;
+    width: 15rem;
+    background-color: #fff;
+    border-right: solid 1px rgb(222, 222, 222);
+    transition: background-color 0.4s ease;
+}
+
+#menu ul .active{
+    background-color: rgb(227, 227, 227);
+}
+
+#menu ul li:hover{
+    background-color: rgb(237, 237, 237);
+}
+
+.titles{
+    position: fixed;
+    top: 12rem;
+    left: 0;
+    background-color: #fff;
+    width:100%;
+    height:6rem;
+    text-align: left;
+    z-index: 8;
+    box-shadow: 1px 1px 3px 2px rgb(228, 228, 228);
+}
+
+.titles ul{
+    padding-right: 4rem;
+    display: inline-block;
+    
+    list-style: none;
+}
+
+.titles ul li{
+    text-align: center;
+    float: left;
+    width: 16rem;
+    background-color: #fff;
+    font-size: 2rem;
+    padding-top: 2.15rem;
+    padding-bottom: 1.5rem;
+    background-color: rgb(255, 255, 255);
+    transition: background-color 0.4s ease;
+    
+}
+
+.titles ul .active{
+    background-color: rgb(227, 227, 227);
+}
+
+.titles ul li:hover{
+    background-color: rgb(237, 237, 237);
+}
+
+#userbar{
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    width: 100%;
+    height: 12rem;
+    background-color: #fff;
+    z-index: 8;
+    text-align: left;
+}
+
+#userbar #user{
+    float: left;
+    width: auto;
+    height: auto;
+    
+}
+
+#userbar #user img{
+    float: left;
+    height: 9rem;
+    width: 9rem;
+    padding: 1.5rem;
+    margin-left: 5rem;
+    border-radius: 50%;
+}
+
+#userbar #user #stats{
+    float: left;
+    height: 12rem;
+    width: 15rem;
+}
+
+#userbar #user p{
+    float: left;
+    font-size: 2.6rem;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+}
+
+#userbar #user i{
+    float: left;
+    font-size: 1.6rem;
+    padding-bottom: 1.5rem;
+    font-style: normal;
+}
+
+#userbar  button{
+    float: left;
+    font-size: 1.6rem;
+    padding: 1.5rem;
+    width:16rem;
+    margin-top: 1.5rem;
+    margin-left: 2rem;
+    background-color: rgb(255, 255, 255);
+    /* box-shadow: 1px 1px 3px 2px rgb(228, 228, 228); */
+    border: none;
+    border: solid 1px rgb(215, 215, 215);
+    border-radius: 4px;
+}
+
+.profile-menu{
+    top: 18rem;
+}
+
+
+.wrapper{
+    display: flex;
+    justify-content: center;
+    margin: 4rem auto;
+    margin-top: 18rem;
+    padding-right: 4rem;
+    width: auto;
+    height: auto;
+}
+
+.wrapper-profile{
+    margin-top: 24rem;
+}
+
+.line{
+    float: left;
+    width: 40rem;
+    height: auto;
+    margin-left: 4rem;
+}
+
+.line-1{
+}
+
+.line-2{
+}
+
+.line-3{
+}
+
+h1{
+    text-align: center;
+    font-weight: 500;
+    font-size: 3rem;
+}
+
+.post{
+    margin-top: 4rem;
+    float: left;
+    height: auto;
+    width: auto;
+    box-shadow: 1px 1px 30px 20px rgb(245, 245, 245);
+    border-radius: 10px;
+    animation: appear 0.35s ease-out normal backwards;
+}
+
+.post .main_img{
+    width: 40rem;
+    height: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.post .content{
+    height: 60rem;
+    height: auto;
+    width: 36rem;
+    padding: 2rem;
+    padding-bottom: 4rem;
+    background-color: #fff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.post .content .user{
+    position: relative;
+    width: 100%;
+    height: 5rem;
+    z-index: 7;
+}
+
+.post .content .user img{
+    float: left;
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+}
+
+.post .content .user p{
+    position: absolute;
+    top: 0.6rem;
+    left: 5rem;
+    font-size: 2rem;
+    margin-left: 1rem;
+    font-weight: 500;
+}
+
+.post .content .user l{
+    position: absolute;
+    top: 3rem;
+    left: 6.3rem;
+    font-size: 1.2rem;
+}
+
+.post .content h1{
+    text-align: left;
+    margin: 2rem 0;
+    font-size: 3rem;
+    font-weight: 400;
+}
+
+.post .content .posttext{
+    font-size: 1.6rem;
+    font-weight: 300;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: solid 1px rgb(189, 189, 189);
+    line-height: 2.4rem;
+}
+
+.post .options{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 5rem;
+    /* background-color: indianred; */
+    padding-bottom: 2rem;
+    border-bottom: solid 1px rgb(189, 189, 189);
+
+}
+
+.post .options .option{
+    display: inline-block;
+    width: auto;
+    height: 5rem;
+    /* background-color: rgb(131, 247, 247); */
+}
+
+.post .options img{
+    float: left;
+    height:  3rem;
+    width: 3rem;
+    padding-top: 1rem;
+    padding-right: 1rem;
+}
+
+.post .options p{
+    float: left;
+    padding-top: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.post .comments{
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    /* background-color: rgb(255, 174, 174); */
+    text-align: center;
+    /* border: solid 1px #999; */
+}
+
+.post .comments .commentInput{
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 1rem;
+    width: 100%;
+    height: auto;
+    /* background-color: rgb(142, 223, 252); */
+    border-bottom: solid 1px rgb(189, 189, 189);
+}
+
+.post .comments .commentInput textarea{
+    float: left;
+    resize: none;
+    width: 68%;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    padding: 1rem;
+    padding-top: 1.7rem;
+    padding-bottom: 0rem;
+}
+
+.post .comments .commentInput .icons{
+    padding-top: 1.6rem;
+    float: right;
+    border-radius: 4px;
+    margin-right:0.2rem;
+}
+
+.post .comments .commentInput .icons img{
+    height: 2.4rem;
+    width: auto;
+    float: left;
+    margin-right:0.7rem;
+}
+
+.post .comments .postComment{
+    float: right;
+    margin: 1rem;
+    margin-right: 2rem;
+    padding: 1rem;
+    width: 12rem;
+    font-size: 1.5rem;
+    border: solid 1px #999;
+    border-radius: 4px;
+}
+
+.post .comments .commentList{
+    width: 100%;
+    height: auto;
+    /* background-color: magenta; */
+    margin: 0 auto;
+    margin-top: 9rem;
+    text-align: center;
+}
+
+.post .comments .commentList .comment{
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    width: 100%;
+    height: auto;
+    /* background-color: rgb(244, 255, 188); */
+}
+
+.post .comments .commentList .commentUser{
+    position: relative;
+    float: left;
+    width: 90%;
+    height: 4rem;
+    /* background-color: lightseagreen; */
+}
+
+.post .comments .commentList .comment .userImg{
+    float: left;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+}
+
+.post .comments .commentList .comment .username{
+    position: absolute;
+    left: 5rem;
+    top: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.post .comments .commentList .comment .timestamp{
+    position: absolute;
+    left: 5rem;
+    top: 2.5rem;
+    font-size: 1.2rem;
+}
+
+.post .comments .commentList .comment .commentText{
+    text-align: left;
+    display: inline-block;
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 1rem;
+    padding-left: 4rem;
+    padding-right: 2.6rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    /* background-color: lightcoral; */
+}
+
+.post .comments .commentList .comment .commentStats{
+    /* background-color: indianred; */
+    width: 75%;
+    height: auto;
+    padding-left: 5rem;
+}
+
+.post .comments .commentList .comment .commentStats p{
+    float: left;
+    font-size: 1.5rem;
+    padding-top: 1.4rem;
+    padding-left: 0.5rem;
+    font-weight: 500;
+}
+
+.post .comments .commentList .comment .commentStats img{
+    height: 3rem;
+    width: 3rem;
+    float: left;
+    padding-top: 0.7rem;
+}
+
+.post .comments .commentList .comment .commentStats .replies{
+    padding-left: 2rem;
+}
+
+@keyframes appear{
+    0% {
+        transform: scale(0);
+    }
+    80% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media(max-width: 1500px){
+    html{
+        font-size: 8.5px;
+    }
+}
+
+@media(max-width: 1160px){
+    .line-3{
+        display: none;
+    }
+}
+
+@media(max-width: 790px){
+
+    html{
+        font-size: 9px;
+    }
+
+    .line-2{
+        display: none;
+    }
+}
+
+@media(max-width: 430px){
+
+    html{
+        font-size: 8px;
+    }
+}
+
+@media(max-width: 330px){
+
+    html{
+        font-size: 7px;
+    }
+}
+
+
+  

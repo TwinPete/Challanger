@@ -16,15 +16,17 @@
 
                     You are logged in!
 
-                    <!--<form action="/createPost" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="text" name="title" >
-                        <textarea name="text" id="" cols="30" rows="10"></textarea>
-                        <input type="file" name="media">
-                        <input type="submit">
-                    </form>-->
-                        
+                    <br>
+                    <br> 
+                    <br>
+                    <br>
+                    <br> 
+                    <br>  
                     <h1>Create Post</h1>
+                    <br>
+                    <br> 
+                    <br>
+
                     {!! Form::open(['action' => 'PostsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                         {{ Form::label('title', 'Title')}}
                         {{ Form::text('title', '')}}
@@ -34,9 +36,30 @@
                         {{ Form::file('media')}}
                         {{ Form::submit('Submit')}}
                     {!! Form::close() !!}
-                    
-                    
+                    <br>
+                    <br> 
+                    <br>
+                    <h1>Create Challange</h1>
+                    <br>
+                    <br> 
+                    <br>
+                    {!! Form::open(['action' => 'ChallangesController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                        {{ Form::label('title', 'Title')}}
+                        {{ Form::text('title', '')}}
+                        {{ Form::label('text', 'Text')}}
+                        {{ Form::text('text', '')}}
+                        {{ Form::submit('Submit')}}
+                    {!! Form::close() !!}
+                    <br>
+                    <br> 
+                    <br>
+                    <br>
+                    <br> 
+                    <br>
+
                     <img src="/storage/userPics/{{ $user->userPic }}" height:="auto" width="300px"/>
+
+                    
                 </div>
             </div>
         </div>

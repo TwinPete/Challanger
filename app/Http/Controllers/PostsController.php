@@ -64,7 +64,7 @@ class PostsController extends Controller
         $post->media = $fileNameToStore;
         $post->save();
 
-        return redirect('/profile');
+        return redirect('/profile2');
     }
 
     /**

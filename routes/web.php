@@ -12,13 +12,17 @@
 */
 
 Route::get('/', 'PagesController@landing');
+Route::get('/profile2', 'PagesController@profile2');
 
 Route::resource('posts', 'PostsController');
+
+Route::resource('challanges', 'ChallangesController');
 
 Route::post('/createPost', 'PostsController@store');
 
 Auth::routes();
 
 Route::get('/profile', 'ProfileController@index');
+
 
 
