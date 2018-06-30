@@ -18,10 +18,10 @@
         <li>Create New</li>
     </ul>
 </div>
-<div id="titles">
+<div class="titles">
     <ul>
         <li>Profiles</li>
-        <li>Posts</li>
+        <li class="active">Posts</li>
         <li>Challanges</li>
     </ul>
 </div>

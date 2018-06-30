@@ -20,11 +20,21 @@ class PagesController extends Controller
         $posts = Post::orderBy('created_at', 'desc')->get();
         //$user = User::all();
         $users = array();
+        
         foreach($posts as $post){
             $users[$post->id] = User::where('Id', $post->userId)->get();
         }
+        $postComments = array();
+        foreach($posts as $post){
+            $postComments[$post->id] = Pcomment::where('postId', $post->id)->get();
+        }
+        $postCommentsUsers = array();
+        for($i = 1; $i < count($postComments); $i++){
+            $postCommentsUsers[$i] = User::where('id', $posts[$i]->userId)->get();
+        }
         $counter = count($posts);
-        return view('/pages/landing')->with('users', $users)->with('posts', $posts)->with('counter', $counter);
+        return view('/pages/landing')->with('users', $users)->with('posts', $posts)->with('counter', $counter)->with('postComments', $postComments)
+        ->with('postCommentsUsers', $postCommentsUsers);
         //return $posts[0]->id;
         //return $posts;
         //return $users;
