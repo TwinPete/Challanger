@@ -457,6 +457,10 @@ h1{
     padding-bottom: 0rem;
 }
 
+.postIdForComment{
+    display: none;
+}
+
 .post .comments .commentInput .icons{
     padding-top: 1.6rem;
     float: right;

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePcommentsTable extends Migration
+class CreateCcommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreatePcommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pcomments', function (Blueprint $table) {
+        Schema::create('ccomments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('userId');
-            $table->integer('postId');
+            $table->integer('challangeId');
             $table->mediumText('comment');
-            $table->date('createdAt');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreatePcommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pcomments');
+        Schema::dropIfExists('ccomments');
     }
 }

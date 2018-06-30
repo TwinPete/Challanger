@@ -15,6 +15,7 @@ Route::get('/', 'PagesController@landing');
 Route::get('/profile2', 'PagesController@profile2');
 
 Route::resource('posts', 'PostsController');
+Route::resource('postComment', 'PostCommentController');
 
 Route::resource('challanges', 'ChallangesController');
 

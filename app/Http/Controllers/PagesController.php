@@ -38,8 +38,13 @@ class PagesController extends Controller
         foreach($posts as $post){
             $postComments[$post->id] = Pcomment::where('postId', $post->id)->get();
         }
-        return view('/pages/profile2')->with('posts', $posts)->with('user', $user)->with('postComments', $postComments);
-        //return $postComments[1];
+        $postCommentsUsers = array();
+        for($i = 1; $i < count($postComments); $i++){
+            $postCommentsUsers[$i] = User::where('id', $posts[$i]->userId)->get();
+        }
+        return view('/pages/profile2')->with('posts', $posts)->with('user', $user)->with('postComments', $postComments)
+        ->with('postCommentsUsers', $postCommentsUsers);
+        //return $postCommentsUsers;
     }
 
 

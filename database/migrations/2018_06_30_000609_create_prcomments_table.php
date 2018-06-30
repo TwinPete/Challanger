@@ -17,7 +17,6 @@ class CreatePrcommentsTable extends Migration
             $table->increments('id');
             $table->integer('userId');
             $table->mediumText('comment');
-            $table->date('createdAt');
             $table->timestamps();
         });
     }

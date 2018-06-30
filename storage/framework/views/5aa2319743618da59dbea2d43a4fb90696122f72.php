@@ -29,9 +29,7 @@
                         
 
                         
-                            
-                        
-                        
+                          
                         <img id="newPostImg" src="#" alt="#">
                         <?php echo Form::open(['action' => 'PostsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']); ?>
 
@@ -110,9 +108,9 @@
                     var user = <?php echo json_encode($user); ?>;
 
                     var postComments = <?php echo json_encode($postComments); ?>;
-                    console.log(posts);
-                    console.log(postComments);
-                    console.log(postComments[1][0].comment);
+                    var postCommentsUsers = <?php echo json_encode($postCommentsUsers); ?>;
+                    console.log(postComments)
+                    
                     
                     // Source der Bilder für die jeweiligen Posts
         
@@ -252,9 +250,11 @@
                                             "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
                                         "</div>" +
                                         "<div class='comments'>" +
-                                            "<form action=''>" +
+                                            "<form action='/postComment' method='POST' enctype='multipart/form-data'>" +
+                                                " <input type='hidden' name='_token' value='<?php echo e(csrf_token()); ?>'> " +
                                                 "<div class='commentInput'>" +
                                                     "<textarea name='comment' placeholder='write a comment'></textarea>" +
+                                                    "<input class='postIdForComment' name='postId' type='text' value='"+ posts[counter_3].id +"'>" +
                                                     "<div class='icons'>" +
                                                         "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
                                                         "<img src='/storage/res/paperclip.svg' alt='No Pic found'>" +
@@ -274,7 +274,7 @@
 
                                     // Kommentare einfügen
                                     var commentsCount = postComments[posts[counter_3].id].length;
-                                    console.log("postId: " + posts[counter_3].id);
+                                    console.log("aktuellesUserPic: " + postCommentsUsers[1][0].userPic);
                                         if(commentsCount > 0){
                                             
                                             console.log("Array in diesem Durchgang größer als 0");
@@ -282,11 +282,11 @@
                                                 // console.log("erster Durchgang: Post: " + posts[counter_3] + " Commentar: " + postComments[posts[counter_3].id][0] );
                                             document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
-                                                                "<img class='userImg' src='/storage/res/user.jpg' alt=''>" +
-                                                                "<p class='username'>TwinPete93</p>" +
-                                                                "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][0].created_at +"</i>" +
+                                                                "<img class='userImg' src='/storage/userPics/" + postCommentsUsers[counter_3][0].userPic + "' alt=''>" +
+                                                                "<p class='username'>"+ postCommentsUsers[counter_3][0].username +"</p>" +
+                                                                "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
-                                                            "<p class='commentText'>"+ postComments[posts[counter_3].id][0].comment +"</p>" +
+                                                            "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +
                                                             "<div class='commentStats'>" +
                                                                 "<img src='/storage/res/camera.svg' alt='No Pic Found'>" +
                                                                 "<p>Likes: 300</p>" + 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Pcomment;
 
 class PostCommentController extends Controller
 {
@@ -34,7 +35,20 @@ class PostCommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'comment' => 'required|string|max:1999'
+        ]);
+
+
+        $pComment = new Pcomment;
+        $pComment->userId = auth()->user()->id;
+        $pComment->postId = $request->input('postId');
+        $pComment->comment = $request->input('comment');
+        $pComment->save();
+
+        return redirect('/profile2');
+    
+
     }
 
     /**
