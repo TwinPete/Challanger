@@ -163,6 +163,84 @@ body {
     display: none;
 }
 
+#userbar{
+    display: inline-block;
+    position: fixed;
+    top: 6.3rem;
+    left: 0;
+    height: 8.8rem;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 4rem;
+    z-index: 9;
+    box-shadow: 1px 1px 3px 2px rgb(228, 228, 228); 
+}
+
+#userbarContent{
+    position: relative;
+    margin-left: 4rem;
+    height: 100%;
+    width: auto;
+}
+
+
+#userPic{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    padding: 1rem;
+}
+
+#username{
+    position: absolute;
+    top: 0.8rem;
+    left: 8rem;
+    font-size: 2.6rem;
+    padding: 1rem;
+}
+
+#userstats{
+    list-style: none;
+    position: absolute;
+    left: 9rem;
+    bottom: 1.8rem;
+}
+
+#userstats li{
+    float: left;
+    font-size: 1.6rem;
+    margin-right: 2rem;
+}
+
+#userbar button{
+    text-align: center;
+    width: 15rem;
+    height: 4rem;
+    margin: 0 auto;
+    margin-right: 2rem;
+    padding: 0.5rem;
+    font-size: 1.6rem;
+    background-color: #fff;
+    border: solid 1px rgb(205, 205, 205);
+    border-radius: 4px;
+    outline: none;
+}
+
+#follow{
+    position: absolute;
+    top: 2.5rem;
+    left: 31rem;
+}
+
+#sendMessage{
+    position: absolute;
+    top: 2.5rem;
+    left: 48rem;
+}
+
 .titles{
     position: fixed;
     top: 12rem;
@@ -173,6 +251,10 @@ body {
     text-align: left;
     z-index: 8;
     box-shadow: 1px 1px 3px 2px rgb(228, 228, 228);
+}
+
+.profileTitles{
+    top: 15rem;
 }
 
 .titles ul{
@@ -212,9 +294,16 @@ body {
     justify-content: center;
     margin: 4rem auto;
     margin-top: 18rem;
+    margin-bottom: 0;
     padding-right: 4rem;
+    /* background-color: powderblue; */
+    padding-bottom: 5rem;
     width: auto;
     height: auto;
+}
+
+.profileWrapper{
+    margin-top: 23rem;
 }
 
 .line{
@@ -231,6 +320,29 @@ body {
 }
 
 .line-3{
+}
+
+.loadMoreWrapper{
+    display: flex;
+    justify-content: center;
+    /* background-color: palevioletred; */
+    height: auto;
+    width: 100%;
+}
+
+.loadMore{
+    display: none;
+    text-align: center;
+    width: 25rem;
+    height: 5rem;
+    margin: 0 auto;
+    margin-bottom: 5rem;
+    padding: 1rem;
+    font-size: 2rem;
+    background-color: #fff;
+    border: solid 1px rgb(205, 205, 205);
+    border-radius: 4px;
+    outline: none;
 }
 
 #counter{
@@ -694,6 +806,10 @@ h1{
         transition: background-color 0.4s ease;
     }
 
+    #userbarContent{
+        margin-left: 1rem;
+    }
+
     .titles{
         display: none;
     }
@@ -709,6 +825,10 @@ h1{
         text-align: center;
         z-index: 8;
         box-shadow: 1px 1px 3px 2px rgb(228, 228, 228);
+    }
+
+    .mobile_profileTitles{
+        top: 15rem;
     }
 
     .mobile_titles ul{

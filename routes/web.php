@@ -11,7 +11,12 @@
 |
 */
 
+// Route::get('/', 'PagesController@landing');
 Route::get('/', 'PagesController@landing');
+
+Route::get('/Test', function(){
+    return "hello k";
+});
 Route::get('/profile2', 'PagesController@profile2');
 
 Route::resource('posts', 'PostsController');
@@ -23,7 +28,7 @@ Route::post('/createPost', 'PostsController@store');
 
 Auth::routes();
 
-Route::get('/profile', 'ProfileController@index');
+Route::resource('/profile', 'ProfileController');
 
 
 

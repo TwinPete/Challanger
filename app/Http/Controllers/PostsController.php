@@ -53,18 +53,23 @@ class PostsController extends Controller
             $fileNameToStore = $filename.'_'.time().'.'.$extension;
             // Upload the Image
             $path = $request->file('media')->storeAs('public/postMedia', $fileNameToStore);
+            
+            
         }else{
             $fileNameToStore = 'random.jpg';
+        
         }
 
         $post = new Post;
         $post->userId = auth()->user()->id;
         $post->title = $request->input('title');
         $post->text = $request->input('text');
-        $post->media = $fileNameToStore;
+        // $post->media = $fileNameToStore;
+        $post->media = "ghk";
         $post->save();
 
-        return redirect('/profile2');
+      return redirect('/profile2');
+
     }
 
     /**

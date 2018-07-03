@@ -41,7 +41,7 @@ class PostCommentController extends Controller
 
 
         $pComment = new Pcomment;
-        $pComment->userId = auth()->user()->id;
+        $pComment->userId = $request->input('userId');
         $pComment->postId = $request->input('postId');
         $pComment->comment = $request->input('comment');
         $pComment->save();

@@ -51,7 +51,9 @@
 <script> console.log("los gehts");</script>
 
         <script>
-            
+
+            // Php Variabeln in JavaScript Variabeln umwandeln
+
             var posts = <?php echo json_encode($posts->toArray()); ?>;
             var users = <?php echo json_encode($users); ?>;
             console.log(users[2]);
@@ -129,6 +131,21 @@
                     if(counter_3 > (posts.length - 1 )){
 
                         // Alle Event Listener vergeben
+
+                        // Buttons
+
+                        // Load More
+
+                        // Countdown, da der Loadmore Button anfangs zu früh zu sehen ist
+                        setTimeout(function(){ 
+                            document.getElementById('loadMore').style.display = "inline-block";
+                            }, 300);
+                    
+                        document.getElementById('loadMore').addEventListener('click', function(){
+                            this.style.backgroundColor = "rgb(245, 245, 245)";
+                        });
+
+                        // Dropdown für Post Kommentare
                         var commentDropdowns = document.getElementsByClassName('commentDropdown');
                                 var comments = document.getElementsByClassName('comments');
                                 
@@ -165,8 +182,8 @@
                             "<img class='main_img' src='../storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
                             "<div class='content'>" +
                                 "<div class='user'>" +
-                                    "<img src='../storage/userPics/" +  users[posts[counter_3].id][0].userPic  + "' alt='No Pic found' />" +
-                                    "<p>"+ users[posts[counter_3].id][0].username +"</p>" +
+                                    "<a href='/profile/" +users[posts[counter_3].id][0].id+ "'><img src='../storage/userPics/" +  users[posts[counter_3].id][0].userPic  + "' alt='No Pic found' /></a>" +
+                                    "<a href='/profile/" +users[posts[counter_3].id][0].id+ "'><p>"+ users[posts[counter_3].id][0].username +"</p></a>" +
                                     "<l>09.09.2019</l>" +
                                 "</div>" +
                                 "<h1>"+ posts[counter_3].title +"</h1>" +
@@ -224,8 +241,8 @@
                                                 // console.log("erster Durchgang: Post: " + posts[counter_3] + " Commentar: " + postComments[posts[counter_3].id][0] );
                                             document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
-                                                                "<img class='userImg' src='/storage/userPics/" + postCommentsUsers[counter_3][0].userPic + "' alt=''>" +
-                                                                "<p class='username'>"+ postCommentsUsers[counter_3][0].username +"</p>" +
+                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'<img class='userImg' src='/storage/userPics/" + postCommentsUsers[counter_3][0].userPic + "' alt=''></a>" +
+                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'><p class='username'>"+ postCommentsUsers[counter_3][0].username +"</p></a>" +
                                                                 "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
                                                             "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +
@@ -251,11 +268,17 @@
             
             
         </script>
-        
        
     </div> 
     <div id="line-3" class="line line-3">
-            
+
+    </div>
+
+    
+
+</div>
+<div class="loadMoreWrapper">
+        <button id="loadMore" class="loadMore">Load More</button>     
 </div>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

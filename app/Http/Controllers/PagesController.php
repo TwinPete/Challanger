@@ -16,6 +16,7 @@ class PagesController extends Controller
 
     public function landing()
     {
+        $userId = auth()->user('id');
         $users = array();
         $posts = Post::orderBy('created_at', 'desc')->get();
         //$user = User::all();
@@ -34,7 +35,7 @@ class PagesController extends Controller
         }
         $counter = count($posts);
         return view('/pages/landing')->with('users', $users)->with('posts', $posts)->with('counter', $counter)->with('postComments', $postComments)
-        ->with('postCommentsUsers', $postCommentsUsers);
+        ->with('postCommentsUsers', $postCommentsUsers)->with('userId', $userId);
         //return $posts[0]->id;
         //return $posts;
         //return $users;
@@ -52,9 +53,13 @@ class PagesController extends Controller
         for($i = 1; $i < count($postComments); $i++){
             $postCommentsUsers[$i] = User::where('id', $posts[$i]->userId)->get();
         }
-        return view('/pages/profile2')->with('posts', $posts)->with('user', $user)->with('postComments', $postComments)
+        return view('pages/profile2')->with('posts', $posts)->with('user', $user)->with('postComments', $postComments)
         ->with('postCommentsUsers', $postCommentsUsers);
         //return $postCommentsUsers;
+    }
+
+    public function test(){
+        return view('/auth/login');
     }
 
 
@@ -79,7 +84,7 @@ class PagesController extends Controller
             // Filename to store
             $fileNameToStore = $filename.'.'.$extension;
             // Upload the Image
-            $path = $request->file('file')->storeAs('public/tmp', $fileNameToStore);
+            $path = $request->file('file')->move_uploaded_file('/Applications/XAMPP/xamppfiles/htdocs/challanger/routes', $fileNameToStore);
         }else{
             $fileNameToStore = 'random.jpg';
         }

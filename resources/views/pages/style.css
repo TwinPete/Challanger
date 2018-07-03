@@ -152,6 +152,33 @@ body {
     background-color: rgb(237, 237, 237);
 }
 
+#userbar{
+    display: inline-block;
+    position: fixed;
+    top: 6.3rem;
+    left: 0;
+    height: auto;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 4rem;
+    z-index: 9;
+    box-shadow: 1px 1px 3px 2px rgb(228, 228, 228); 
+}
+
+#userbar .userbarWrapper{
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    list-style: none;
+    background-color: aquamarine;
+}
+
+#usebar #userbarWrapper img{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .titles{
     position: fixed;
     top: 12rem;

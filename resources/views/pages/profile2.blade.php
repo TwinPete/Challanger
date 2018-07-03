@@ -9,27 +9,43 @@
     <span id="filename">Upload a File!!!</span>
 </label> --}}
 
-<div id="menu">
+<div id="userbar">
+        <div id="userbarContent">
+            <img id="userPic" src="" alt="No Pic found" />
+            <p id="username"></p>
+            <ul id="userstats">
+                <li id="likes">Likes: 300</li>
+                <li id="followers">Followers: 11</li>
+            </ul>
+            <button id="follow">Follow</button>
+            <button id="sendMessage">Send Message</button>
+        </div>
+    </div>
+<div class="titles profileTitles">
     <ul>
-        <li>Highest Rated</li>
-        <li>Newest</li>
-        <li>Personalized</li>
-        <li>Personalized</li>
-        <li>Create New</li>
-    </ul>
-</div>
-<div class="titles">
-    <ul>
-        <li>Profiles</li>
+        <li>Info</li>
         <li class="active">Posts</li>
         <li>Challanges</li>
+        <li>Groups</li>
+        <li>Subcribers</li>
+        <li>Following</li>
     </ul>
 </div>
-<div id="wrapper" class="wrapper">
+<div class="mobile_titles mobile_profileTitles">
+        <ul class="activeTitle">
+            <li class="active">Profiles</li>
+        </ul>
+        <ul class="dropdownTitles">
+            <li>Posts</li>
+            <li>Challanges</li>
+        </ul>
+    </div>
+<div id="wrapper" class="wrapper profileWrapper">
         
             <div id="line-1" class="line line-1">
                     
                  @if(!Auth::guest()) 
+                  
                     <div  id="newPost" class="newPost">
                             
                         
@@ -110,19 +126,27 @@
                     
                     
                     // Php Variabeln in Javascript Variabeln umwandeln
+
+                    // var auth = ;
+                    // alert(auth);
                     
                     var posts = {!! json_encode($posts->toArray()) !!};
                     //console.log(posts);
                     var user = {!! json_encode($user) !!};
+                    console.log(user.id);
+                    // Id des aktuell angemeldeten Users
+                    var authId = {!! json_encode(auth()->user('id')) !!};
+                    console.log("Auth Id:" + authId.id + "UserId:" + user.id);
 
                     var postComments = {!! json_encode($postComments) !!};
                     var postCommentsUsers = {!! json_encode($postCommentsUsers) !!};
                     console.log(postComments)
                     
                     
-                    // Source der Bilder für die jeweiligen Posts
-        
-                    //var pics = ["pic-1.jpg", "pic-2.jpg", "pic-3.jpg", "pic-4.jpg", "pic-5.jpg", "pic-6.jpg", "pic-1.jpg", "pic-2.jpg", "pic-3.jpg", "pic-4.jpg", "pic-5.jpg", "pic-6.jpg"];
+                    // Userbar mit Werten belegen
+
+                    document.getElementById('userPic').src = "../storage/userPics/" + authId.userPic;
+                    document.getElementById('username').innerHTML =  authId.username;
         
                     var counter_3 = 0;
         
@@ -183,7 +207,12 @@
         
                     function load_lines(lines){
                         console.log("Funktion wird gestartet");
-                        var trigger = true;
+                        // Trigger wird auf true gesetzt, falls es sich um das Profil des jeweiligen Users handelt ...
+                        // ... bzw. falls die User AUthentifizierungsnummer identiasch mit der Profilnummer ist
+                        if(authId != null){
+                            var trigger = (user.id == authId.id);
+                        }
+                        
                         
         
                         for(var i = 1; i <= lines; i++){
@@ -193,8 +222,8 @@
                                 var commentDropdowns = document.getElementsByClassName('commentDropdown');
                                 var comments = document.getElementsByClassName('comments');
                                 
-                                //console.log(comments[1].classList);
-                                 // Öffnen/Schließen der Comment Sektion         
+                                
+                                // Öffnen/Schließen der Comment Sektion         
                                 for(var i = 0; i < commentDropdowns.length; i++){
                                     commentDropdowns[i].classList.add("cd" + i)
                                        commentDropdowns[i].addEventListener('click', function(){
@@ -260,6 +289,7 @@
                                         "<div class='comments'>" +
                                             "<form action='/postComment' method='POST' enctype='multipart/form-data'>" +
                                                 " <input type='hidden' name='_token' value='{{ csrf_token() }}'> " +
+                                               
                                                 "<div class='commentInput'>" +
                                                     "<textarea name='comment' placeholder='write a comment'></textarea>" +
                                                     "<input class='postIdForComment' name='postId' type='text' value='"+ posts[counter_3].id +"'>" +
@@ -290,8 +320,8 @@
                                                 // console.log("erster Durchgang: Post: " + posts[counter_3] + " Commentar: " + postComments[posts[counter_3].id][0] );
                                             document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
-                                                                "<img class='userImg' src='/storage/userPics/" + postCommentsUsers[counter_3][0].userPic + "' alt=''>" +
-                                                                "<p class='username'>"+ postCommentsUsers[counter_3][0].username +"</p>" +
+                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'><img class='userImg' src='/storage/userPics/" + postCommentsUsers[counter_3][0].userPic + "' alt=''></a>" +
+                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'><p class='username'>"+ postCommentsUsers[counter_3][0].username +"</p></a>" +
                                                                 "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
                                                             "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +

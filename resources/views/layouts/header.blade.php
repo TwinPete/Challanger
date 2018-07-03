@@ -15,7 +15,7 @@
 </head>
 <body id="body">
     <div id="header">
-        <img src="/storage/res/logo.png" alt="No Pic found">
+        {{-- <img src="#" alt="No Pic found"> --}}
         <div id="searchbar">
             <input type="text" placeholder="search">
             <div id="searchbutton">
@@ -23,11 +23,12 @@
             </div>
         </div>
         <ul class="header-ul">
-            <li>What is Challanger?</li>
             @if (Auth::guest())
+                            <li>What is Challanger?</li>
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            <li><a href="/profile2">My Profile</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
