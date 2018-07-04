@@ -511,7 +511,7 @@ h1{
 
 .post .options .option{
     display: inline-block;
-    width: auto;
+    width: 33.33%;
     height: 5rem;
     /* background-color: rgb(131, 247, 247); */
 }
@@ -655,7 +655,7 @@ h1{
     border-radius: 50%;
 }
 
-.post .comments .commentList .comment .username{
+.post .comments .commentUsername{
     position: absolute;
     left: 5rem;
     top: 0.5rem;

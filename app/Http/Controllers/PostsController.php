@@ -64,8 +64,7 @@ class PostsController extends Controller
         $post->userId = auth()->user()->id;
         $post->title = $request->input('title');
         $post->text = $request->input('text');
-        // $post->media = $fileNameToStore;
-        $post->media = "ghk";
+        $post->media = $fileNameToStore;
         $post->save();
 
       return redirect('/profile2');

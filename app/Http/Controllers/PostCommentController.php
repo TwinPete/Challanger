@@ -45,7 +45,7 @@ class PostCommentController extends Controller
         $pComment->postId = $request->input('postId');
         $pComment->comment = $request->input('comment');
         $pComment->save();
-
+            
         return redirect('/profile2');
     
 

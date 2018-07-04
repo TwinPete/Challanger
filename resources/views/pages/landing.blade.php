@@ -58,8 +58,11 @@
             var posts = {!! json_encode($posts->toArray()) !!};
             var users = {!! json_encode($users) !!};
             console.log(users[2]);
+            var authId = {!! json_encode(auth()->user('id')) !!};
             var postComments = {!! json_encode($postComments) !!};
             var postCommentsUsers = {!! json_encode($postCommentsUsers) !!};
+            console.log("Comment User: ");
+            console.log(postCommentsUsers);
             console.log(postComments)
             
             // Source der Bilder für die jeweiligen Posts
@@ -183,8 +186,8 @@
                             "<img class='main_img' src='../storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
                             "<div class='content'>" +
                                 "<div class='user'>" +
-                                    "<a href='/profile/" +users[posts[counter_3].id][0].id+ "'><img src='../storage/userPics/" +  users[posts[counter_3].id][0].userPic  + "' alt='No Pic found' /></a>" +
-                                    "<a href='/profile/" +users[posts[counter_3].id][0].id+ "'><p>"+ users[posts[counter_3].id][0].username +"</p></a>" +
+                                    "<a href='/profile/" +users[posts[counter_3].id][0].id + "'><img src='../storage/userPics/" +  users[posts[counter_3].id][0].userPic  + "' alt='No Pic found' /></a>" +
+                                    "<a href='/profile/" +users[posts[counter_3].id][0].id + "'><p>"+ users[posts[counter_3].id][0].username +"</p></a>" +
                                     "<l>09.09.2019</l>" +
                                 "</div>" +
                                 "<h1>"+ posts[counter_3].title +"</h1>" +
@@ -194,7 +197,7 @@
                                                     "<img src='/storage/res/like.svg' alt=''>" + 
                                                     "<p>Like</p>" + 
                                             "</div>" + 
-                                            "<div class'option'>" +
+                                            "<div class='option'>" +
                                                     "<img src='/storage/res/share.svg' alt=''>" +
                                                     "<p>Share</p>" +
                                             "</div>" +
@@ -209,18 +212,8 @@
                                             "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
                                         "</div>" +
                                         "<div class='comments'>" +
-                                            "<form action='/postComment' method='POST' enctype='multipart/form-data'>" +
-                                                " <input type='hidden' name='_token' value='{{ csrf_token() }}'> " +
-                                                "<div class='commentInput'>" +
-                                                    "<textarea name='comment' placeholder='write a comment'></textarea>" +
-                                                    "<input class='postIdForComment' name='postId' type='text' value='"+ posts[counter_3].id +"'>" +
-                                                    "<div class='icons'>" +
-                                                        "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
-                                                        "<img src='/storage/res/paperclip.svg' alt='No Pic found'>" +
-                                                        "<img src='/storage/res/camera.svg' alt='No Pic found'>" +
-                                                    "</div>" +
-                                                "</div>" +
-                                                "<input class='postComment' type='submit' value='Post Comment'>" +
+                                            "<form id='commentForm_"+posts[counter_3].id+"' action='/postComment' method='POST' enctype='multipart/form-data'>" +
+                                                
                                             "</form>" +
                                             
                                             "<div id='commentList_"+ posts[counter_3].id +"' class='commentList'>" +
@@ -232,18 +225,45 @@
                             "</div>" +
                         "</div>"; 
 
+                        // Kommentar schreiben Input einfügen
+
+                        if(authId != null){
+                            console.log("geht zumindest in die Funkiton. AuthId: " + authId.id);
+                            document.getElementById("commentForm_"+ posts[counter_3].id).innerHTML = " <input type='hidden' name='_token' value='{{ csrf_token() }}'> " +
+                                                "<div class='commentInput'>" +
+                                                    "<textarea name='comment' placeholder='write a comment'></textarea>" +
+                                                    "<input class='postIdForComment' name='postId' type='text' value='"+ posts[counter_3].id +"'>" +
+                                                    "<input class='userIdForComment' name='userId' type='hidden' value='"+ authId.id +"'>" +
+                                                    "<div class='icons'>" +
+                                                        "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
+                                                        "<img src='/storage/res/paperclip.svg' alt='No Pic found'>" +
+                                                        "<img src='/storage/res/camera.svg' alt='No Pic found'>" +
+                                                    "</div>" +
+                                                "</div>" +
+                                                "<input class='postComment' type='submit' value='Post Comment'>" ;
+                        }else{
+                            console.log("Aktueller User ist nocht eingeloggt");
+                        }
+
+                        console.log("Aktueller Post:" + posts[counter_3].title + " mit Postnummer: " + posts[counter_3].id);
+                        
+
                          // Kommentare einfügen
                          var commentsCount = postComments[posts[counter_3].id].length;
-                                    console.log("aktuellesUserPic: " + postCommentsUsers[1][0].userPic);
+                                    
                                         if(commentsCount > 0){
                                             
                                             console.log("Array in diesem Durchgang größer als 0");
                                             for(var x = 0; x < commentsCount; x++){
+                                                var commentUser = postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id];
+                                                if(commentUser != null){
+                                                   
+                                                
                                                 // console.log("erster Durchgang: Post: " + posts[counter_3] + " Commentar: " + postComments[posts[counter_3].id][0] );
-                                            document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
+                                                    document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
-                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'<img class='userImg' src='/storage/userPics/" + postCommentsUsers[counter_3][0].userPic + "' alt=''></a>" +
-                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'><p class='username'>"+ postCommentsUsers[counter_3][0].username +"</p></a>" +
+                                                                "<a href='/profile/"+commentUser.id+"'><img class='userImg' src='/storage/userPics/" + commentUser.userPic + "' alt=''></a>" +
+                                                                "<a href='/profile/"+commentUser.id+"'><p class='commentUsername'>"+ commentUser.username +"</p></a>" +
                                                                 "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
                                                             "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +
@@ -253,6 +273,7 @@
                                                                 "<p class='replies'>Replies: 11</p>" +
                                                             "</div>" +
                                                         "</div>";
+                                                }
                                         }
                                     }
                         

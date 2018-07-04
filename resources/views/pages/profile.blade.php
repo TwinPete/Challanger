@@ -40,7 +40,7 @@
             <li>Challanges</li>
         </ul>
     </div>
-<div id="wrapper" class="wrapper">
+<div id="wrapper" class="wrapper profileWrapper">
         
             <div id="line-1" class="line line-1">
                     
@@ -119,8 +119,8 @@
 
                     // Userbar mit Werten belegen
 
-                    document.getElementById('userPic').src = "../storage/userPics/" + authId.userPic;
-                    document.getElementById('username').innerHTML =  authId.username;
+                    document.getElementById('userPic').src = "../storage/userPics/" + user.userPic;
+                    document.getElementById('username').innerHTML =  user.username;
                     
                     
         
@@ -185,10 +185,10 @@
                         console.log("Funktion wird gestartet");
                         // Trigger wird auf true gesetzt, falls es sich um das Profil des jeweiligen Users handelt ...
                         // ... bzw. falls die User AUthentifizierungsnummer identiasch mit der Profilnummer ist
-                        if(authId != null){
-                            var trigger = (user.id == authId.id);
-                        }
-                        
+                        // if(authId != null){
+                        //     var trigger = (user.id == authId.id);
+                        // }
+                        var trigger = false;
                         
         
                         for(var i = 1; i <= lines; i++){
@@ -248,7 +248,7 @@
                                                     "<img src='/storage/res/like.svg' alt=''>" + 
                                                     "<p>Like</p>" + 
                                             "</div>" + 
-                                            "<div class'option'>" +
+                                            "<div class='option'>" +
                                                     "<img src='/storage/res/share.svg' alt=''>" +
                                                     "<p>Share</p>" +
                                             "</div>" +
@@ -302,7 +302,7 @@
                                             document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
                                                                 "<a href='/profile/"+postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id].id+"'><img class='userImg' src='/storage/userPics/" + postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id].userPic + "' alt=''></a>" +
-                                                                "<a href='/profile/"+postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id].id+"'><p class='username'>"+ postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id].username +"</p></a>" +
+                                                                "<a href='/profile/"+postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id].id+"'><p class='CommentUsername'>"+ postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id].username +"</p></a>" +
                                                                 "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
                                                             "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +

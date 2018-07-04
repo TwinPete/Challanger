@@ -26,19 +26,28 @@ class PagesController extends Controller
             $users[$post->id] = User::where('Id', $post->userId)->get();
         }
         $postComments = array();
-        foreach($posts as $post){
-            $postComments[$post->id] = Pcomment::where('postId', $post->id)->get();
-        }
+        // foreach($posts as $post){
+        //     $postComments[$post->id] = Pcomment::where('postId', $post->id)->get();
+        // }
+        // $postCommentsUsers = array();
+        // for($i = 1; $i < count($postComments); $i++){
+        //     $postCommentsUsers[$i] = User::where('id', $posts[$i]->userId)->get();
+        // }
         $postCommentsUsers = array();
-        for($i = 1; $i < count($postComments); $i++){
-            $postCommentsUsers[$i] = User::where('id', $posts[$i]->userId)->get();
-        }
+            foreach($posts as $post){
+                $postComments[$post->id] = Pcomment::where('postId', $post->id)->get();
+                foreach($postComments[$post->id] as $comment){
+                    $postCommentsUsers[$post->id][$comment->id] = User::find($comment->userId);
+                }
+            }
         $counter = count($posts);
         return view('/pages/landing')->with('users', $users)->with('posts', $posts)->with('counter', $counter)->with('postComments', $postComments)
         ->with('postCommentsUsers', $postCommentsUsers)->with('userId', $userId);
         //return $posts[0]->id;
         //return $posts;
         //return $users;
+        //return $postCommentsUsers;
+
     }
 
     public function profile2()
@@ -49,13 +58,20 @@ class PagesController extends Controller
         foreach($posts as $post){
             $postComments[$post->id] = Pcomment::where('postId', $post->id)->get();
         }
+        // $postCommentsUsers = array();
+        // for($i = 1; $i < count($postComments); $i++){
+        //     $postCommentsUsers[$i] = User::where('id', $posts[$i]->userId)->get();
+        // }
         $postCommentsUsers = array();
-        for($i = 1; $i < count($postComments); $i++){
-            $postCommentsUsers[$i] = User::where('id', $posts[$i]->userId)->get();
-        }
+            foreach($posts as $post){
+                $postComments[$post->id] = Pcomment::where('postId', $post->id)->get();
+                foreach($postComments[$post->id] as $comment){
+                    $postCommentsUsers[$post->id][$comment->id] = User::find($comment->userId);
+                }
+            }
         return view('pages/profile2')->with('posts', $posts)->with('user', $user)->with('postComments', $postComments)
         ->with('postCommentsUsers', $postCommentsUsers);
-        //return $postCommentsUsers;
+        //return $user;
     }
 
     public function test(){
@@ -84,7 +100,9 @@ class PagesController extends Controller
             // Filename to store
             $fileNameToStore = $filename.'.'.$extension;
             // Upload the Image
-            $path = $request->file('file')->move_uploaded_file('/Applications/XAMPP/xamppfiles/htdocs/challanger/routes', $fileNameToStore);
+            $path = $request->file('file')->storeAs('public/tmp', $fileNameToStore);
+            //Storage::putFile('', $request->file('media'));
+            
         }else{
             $fileNameToStore = 'random.jpg';
         }

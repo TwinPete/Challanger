@@ -250,7 +250,7 @@
                             }
                             
                             document.getElementById("line-" + i).innerHTML +=  "<div class='post'>" +
-                                    "<img class='main_img' src='../storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
+                                    "<img class='main_img' src='/storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
                                     "<div class='content'>" +
                                         "<div class='user'>" +
                                             "<img src='../storage/userPics/" +  user.userPic  + "' alt='No Pic found' />" +
@@ -264,7 +264,7 @@
                                                     "<img src='/storage/res/like.svg' alt=''>" + 
                                                     "<p>Like</p>" + 
                                             "</div>" + 
-                                            "<div class'option'>" +
+                                            "<div class='option'>" +
                                                     "<img src='/storage/res/share.svg' alt=''>" +
                                                     "<p>Share</p>" +
                                             "</div>" +
@@ -285,6 +285,7 @@
                                                 "<div class='commentInput'>" +
                                                     "<textarea name='comment' placeholder='write a comment'></textarea>" +
                                                     "<input class='postIdForComment' name='postId' type='text' value='"+ posts[counter_3].id +"'>" +
+                                                    "<input class='userIdForComment' name='userId' type='hidden' value='"+ authId.id +"'>" +
                                                     "<div class='icons'>" +
                                                         "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
                                                         "<img src='/storage/res/paperclip.svg' alt='No Pic found'>" +
@@ -302,18 +303,22 @@
                                         "</div>" +
                                     "</div>"; 
 
+
+                                                console.log("Aktuelles Bild heißt: " + posts[counter_3].media);
                                     // Kommentare einfügen
                                     var commentsCount = postComments[posts[counter_3].id].length;
-                                    console.log("aktuellesUserPic: " + postCommentsUsers[1][0].userPic);
+                                    //console.log("aktuellesUserPic: " + postCommentsUsers[1][0].userPic);
                                         if(commentsCount > 0){
                                             
                                             console.log("Array in diesem Durchgang größer als 0");
                                             for(var x = 0; x < commentsCount; x++){
+                                                var commentUser = postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id];
+                                                if(commentUser != null){
                                                 // console.log("erster Durchgang: Post: " + posts[counter_3] + " Commentar: " + postComments[posts[counter_3].id][0] );
                                             document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
-                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'><img class='userImg' src='/storage/userPics/" + postCommentsUsers[counter_3][0].userPic + "' alt=''></a>" +
-                                                                "<a href='/profile/"+postCommentsUsers[counter_3][0].id+"'><p class='username'>"+ postCommentsUsers[counter_3][0].username +"</p></a>" +
+                                                                "<a href='/profile/"+commentUser.id+"'><img class='userImg' src='/storage/userPics/" + commentUser.userPic + "' alt=''></a>" +
+                                                                "<a href='/profile/"+commentUser.id+"'><p class='commentUsername'>"+ commentUser.username +"</p></a>" +
                                                                 "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
                                                             "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +
@@ -323,6 +328,7 @@
                                                                 "<p class='replies'>Replies: 11</p>" +
                                                             "</div>" +
                                                         "</div>";
+                                                }
                                         }
                                     }
                                     

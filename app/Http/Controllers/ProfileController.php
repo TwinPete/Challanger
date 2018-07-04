@@ -58,7 +58,13 @@ class ProfileController extends Controller
         {
                 // gewähltes Profil wird ausgesucht
             $a = User::all();
-            $user = $a[$id-1];
+            //$user = $a[$id-1];
+            for($r = 0; $r < count($a); $r++){
+                if($a[$r]->id == $id){
+                    $user = $a[$r];
+                }
+            }
+            //$user = User::where('username', 'sessaly')->get();
             // Posts des jeweiligen Profils werden geladen
 
             $posts = Post::where('userId', $user->id)->orderBy('created_at', 'desc')->get();
@@ -86,7 +92,7 @@ class ProfileController extends Controller
             ->with('postCommentsUsers', $postCommentsUsers);
             //return $postCommentsUsers;
             //return $postCommentsUsers;
-            // return $authId;
+            //return $user;
             //return $postComments;
         }
     }
