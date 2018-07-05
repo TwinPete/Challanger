@@ -78,6 +78,7 @@
                     var postElement = document.getElementById('posts');
                     postElement.addEventListener('click', posts);
                     console.log("2");
+                    challangesInitialized = false;
                     var challangeElement = document.getElementById('challanges');
                     challangeElement.addEventListener('click', challanges);
 
@@ -85,7 +86,7 @@
 
                     // Alle anderen Menupunkte auf zurücksetzen
 
-                    challangeElement.classList[0] = "";
+                    challangeElement.classList.remove("active");
 
                     // Posts auf activ setzen
 
@@ -99,14 +100,14 @@
                     console.log("4");
                     var postWrapper = document.getElementById('post-wrapper');
                     postWrapper.style.display = "flex";
-                    initialize("Posts");
+                    //initialize("Posts");
 
                     }
                     function challanges(){
 
                     // Alle anderen Menupunkte auf zurücksetzen
 
-                    postElement.classList[0] = "";
+                    postElement.classList.remove("active");
                     
                     // Challanges auf activ setzen
 
@@ -121,8 +122,10 @@
                     var challangeWrapper = document.getElementById('challange-wrapper');
                     console.log(challangeWrapper);
                     challangeWrapper.style.display = "flex";
-                    
-                    initialize("Challanges");
+                    if(!challangesInitialized){
+                        initialize("Challanges");
+                    }
+                    challangesInitialized = true;
                     }
 
                     function profiles(){
@@ -206,14 +209,15 @@
             // Beim Laden der Seiten wird folgende Funktion aufgerufen, die entsprechend der jeweiligen Bildschirmgröße die Posts anordnet
         
             var loadType = document.getElementsByClassName('active')[0].innerHTML;
-            initialize(loadType);
-
+            document.addEventListener("DOMContentLoaded", function(event){
+               
+                initialize(loadType);
+            });
             function initialize(type){
 
-                alert("initialize" + type);
+                
 
-                document.addEventListener("DOMContentLoaded", function(event){
-                    alert("Dom Content loaded");
+                
                     // Abfragen, welche Größe der Bildschirm hat, um die entsprechende Funktion aufzurufen
 
                     var window = document.documentElement.clientWidth;
@@ -221,10 +225,10 @@
 
                     if(window >= 1150){
                         if(type == "Posts"){
-                            alert("Hier scheint es noch hineinzugehen");
+                            
                             load_lines(3, type);
                         }else if(type == "Challanges"){
-                            alert("scheint zu funktionieren bis zum 'WindowCheck");
+                            
                             load_lines(3, type);
                         }else{
                             load_lines(3, type);
@@ -251,7 +255,7 @@
                         }
                     }
 
-            });
+            
 
             }
         
@@ -286,9 +290,8 @@
                     // Ladefunktionen für die Posts
         
                     function load_lines(lines, type){
-                        alert("Funktion wird gestartet mit" + type);
 
-                        // Zuerst wird bestiimmt, welche Art von 'Inhalt erzeugt werden soll
+                        // als Zweites wird bestimmt, welche Art von Inhalt erzeugt werden soll
 
                         // in die Variable Content werden die entsprechenden Inhalte geladen
                         var content;
@@ -296,12 +299,15 @@
                         var commentUsers;
 
                         if(type == "Posts"){
+                            counter_3 = 0;
+
                             content = posts;
                             comments = postComments;
                             commentUsers = postCommentsUsers;
-                        }else if(lines == "Challanges"){
-                            alert("challanges werden geladen");
+                        }else if(type == "Challanges"){
+                            
                             console.log("Challanges werden geladen");
+                            counter_3 = 0;
                             //content = challanges;
                             content = posts;
                             comments = postComments;
@@ -310,7 +316,7 @@
                             console.log("Profile werden geladen");
                         }
 
-
+                        
 
                         // Trigger wird auf true gesetzt, falls es sich um das Profil des jeweiligen Users handelt ...
                         // ... bzw. falls die User AUthentifizierungsnummer identiasch mit der Profilnummer ist
@@ -318,10 +324,12 @@
                             var trigger = (user.id == authId.id);
                         }
                         
-                        
+                        // Bevor die Schleife gestarted wird, werden noch einmal alle lines zurückgesetzt
+
         
                         for(var i = 1; i <= lines; i++){
-                            if(counter_3 > (posts.length - 1 )){
+                            
+                            if(counter_3 > (content.length - 1 )){
 
                                 // Alle Event Listener vergeben
                                 var commentDropdowns = document.getElementsByClassName('commentDropdown');
@@ -366,10 +374,19 @@
 
                             var line = document.getElementById("line-" + i + "-" + type);
 
-                            // erneut abfragen, welcher Inhalt geladen wird
+                            // lines zurücksetzen
 
-                            if(type == "Posts"){
+                            // reset_counter = i;
+
+                            // if(reset_counter > 1 && reset_counter < 3){
+                            //     line.innerHTML = "";
+                            //     reset_counter++;
+                            // }
+
+                            // erneut abfragen, welcher Inhalt geladen wird
                             
+                            if(type == "Posts"){
+                                
                                 line.innerHTML +=  "<div class='card post'>" +
                                         "<img class='main_img' src='/storage/postMedia/" + content[counter_3].media  + "'alt='No Pic found'>" +
                                         "<div class='content'>" +
@@ -425,13 +442,61 @@
                                         "</div>"; 
 
                             }else if(type == "Challanges"){
-                                alert("bin grad in der Line: " + "line-" + i + "-" + type)
-                                line.innerHTML +=  "<div class='card'><h1>Challange</h1>" +
-                                "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
-                                        "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
+                               
+                                line.innerHTML +=  "<div class='card post'>" +
+                                        "<div class='content'>" +
+                                            "<div class='user'>" +
+                                                "<img src='../storage/userPics/" +  user.userPic  + "' alt='No Pic found' />" +
+                                                "<p>"+ user.username +"</p>" +
+                                                "<l>" + content[counter_3].updated_at + "</l>" +
+                                            "</div>" +
+                                            "<h1>"+ content[counter_3].title +"</h1>" +
+                                            "<p class='posttext'> "+ content[counter_3].text +"</p>" +
+                                            "<p class='reward'>Reward: 500$</p>" +
+                                            "<p class='deadline'>Deadline:<span> 20.09.2018 at 15:30pm </span></p>" +
+                                            "<div class='options'>" +
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/like.svg' alt=''>" + 
+                                                        "<p>Like</p>" + 
+                                                "</div>" + 
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/share.svg' alt=''>" +
+                                                        "<p>Share</p>" +
+                                                "</div>" +
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/comment.svg' alt=''>" +
+                                                        "<p>Comment</p>" +
+                                                "</div>" +
+                                            "</div>" +
+                                            "<div class='postStats'>" +
+                                                "<p>1000 Likes</p>" +
+                                                "<p>" + comments[content[counter_3].id].length + " Comments</p>" +
+                                                "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
+                                            "</div>" +
+                                            "<div class='comments'>" +
+                                                "<form action='/postComment' method='POST' enctype='multipart/form-data'>" +
+                                                    " <input type='hidden' name='_token' value='<?php echo e(csrf_token()); ?>'> " +
+                                                
+                                                    "<div class='commentInput'>" +
+                                                        "<textarea name='comment' placeholder='write a comment'></textarea>" +
+                                                        "<input class='postIdForComment' name='postId' type='text' value='"+ content[counter_3].id +"'>" +
+                                                        "<input class='userIdForComment' name='userId' type='hidden' value='"+ authId.id +"'>" +
+                                                        "<div class='icons'>" +
+                                                            "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
+                                                            "<img src='/storage/res/paperclip.svg' alt='No Pic found'>" +
+                                                            "<img src='/storage/res/camera.svg' alt='No Pic found'>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                    "<input class='postComment' type='submit' value='Post Comment'>" +
+                                                "</form>" +
+                                                
+                                                "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
                                                         
-                                        "</div>" +
-                                    "</div>" ;
+                                                    "</div>" +
+                                                
+                                                    "</div>" +
+                                            "</div>" +
+                                        "</div>"; 
                             }
 
 
