@@ -18,8 +18,8 @@
 <div class="titles profileTitles">
     <ul>
         <li>Info</li>
-        <li class="active">Posts</li>
-        <li>Challanges</li>
+        <li id="posts" class="active">Posts</li>
+        <li id="challanges" >Challanges</li>
         <li>Groups</li>
         <li>Subcribers</li>
         <li>Following</li>
@@ -34,13 +34,13 @@
             <li>Challanges</li>
         </ul>
     </div>
-<div id="wrapper" class="wrapper profileWrapper">
+<div id="post-wrapper" class="wrapper profileWrapper">
         
             <div id="line-1" class="line line-1">
                     
                  <?php if(!Auth::guest()): ?> 
                   
-                    <div  id="newPost" class="newPost">
+                    <div  id="newPost" class="newCard">
                             
                         
 
@@ -72,6 +72,44 @@
         <script> console.log("los gehts");</script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
                 <script>
+
+                    // Event Listener und Funktionen für Menu
+                    console.log("1");
+                    document.getElementById('posts').addEventListener('click', posts);
+                    console.log("2");
+                    document.getElementById('challanges').addEventListener('click', challanges);
+
+                    function posts(){
+
+                    // Alle anderen wrapper ausblenden
+                    console.log("3");
+                    document.getElementById('challange-wrapper').style.display = "none";
+
+                    // Posts laden
+                    console.log("4");
+                    var postWrapper = document.getElementById('post-wrapper');
+                    postWrapper.style.display = "flex";
+                    initialize("Posts");
+
+                    }
+                    function challanges(){
+                        
+                    // Alle anderen wrapper ausblenden
+                    console.log("5");
+                    var postWrapper = document.getElementById('post-wrapper').style.display = "none";
+
+                    // Challanges laden
+                    console.log("6");
+                    var challangeWrapper = document.getElementById('challange-wrapper');
+                    console.log(challangeWrapper);
+                    challangeWrapper.style.display = "flex";
+                    
+                    initialize("Challanges");
+                    }
+
+                    function profiles(){
+                    
+                    }
 
                     
                     document.getElementById('line-1').addEventListener("change", function(){
@@ -147,29 +185,53 @@
         
         
         
-                    // Beim Laden der Seiten wird folgende Funktion aufgerufen, die entsprechend der jeweiligen Bildschirmgröße die Posts anordnet
+            // Beim Laden der Seiten wird folgende Funktion aufgerufen, die entsprechend der jeweiligen Bildschirmgröße die Posts anordnet
         
-                    document.addEventListener("DOMContentLoaded", function(event){
-        
-                        // Abfragen, welche Größe der Bildschirm hat, um die entsprechende Funktion aufzurufen
-        
-                        var window = document.documentElement.clientWidth;
-                        // alert(window);
-        
-                        if(window >= 1150){
+            var loadType = document.getElementsByClassName('active')[0].innerHTML;
+            initialize(loadType);
+
+            function initialize(type){
+
+                document.addEventListener("DOMContentLoaded", function(event){
+
+                    // Abfragen, welche Größe der Bildschirm hat, um die entsprechende Funktion aufzurufen
+
+                    var window = document.documentElement.clientWidth;
+                    // alert(window);
+
+                    if(window >= 1150){
+                        if(type == "Posts"){
                             load_lines(3);
+                        }else if(type == "Challanges"){
+                            load_lines_challange(3);
+                        }else{
+                            load_lines_profile(3);
                         }
-                        if(window <= 1150 && window > 773){
+                        
+                    }
+                    if(window <= 1150 && window > 773){
+                        if(type = "posts"){
                             load_lines(2);
+                        }else if(type == "challanges"){
+                            load_lines_challange(1);
+                        }else{
+                            load_lines_profile(1);
                         }
-        
-                        if(window <= 773){
-                            
+                    }
+
+                    if(window <= 773){
+                        if(type = "posts"){
                             load_lines(1);
-                            // alert("jetzt");
+                        }else if(type == "challanges"){
+                            load_lines_challange(1);
+                        }else{
+                            load_lines_profile(1);
                         }
-        
-                    });
+                    }
+
+            });
+
+            }
         
                     // Abfragen für Verkleinerungen des Bildschirms
         
@@ -195,6 +257,15 @@
                     });
         
                     console.log("Funktion wird gleich gestartet");
+
+                    function load_lines_challange(){
+                        alert("challanges werden geladen");
+                    }
+                    function load_lines_profile(){
+                        alert("profiles werden geladen");
+                    }
+
+
                     // Ladefunktionen für die Posts
         
                     function load_lines(lines){
@@ -249,7 +320,7 @@
                                 continue;
                             }
                             
-                            document.getElementById("line-" + i).innerHTML +=  "<div class='post'>" +
+                            document.getElementById("line-" + i).innerHTML +=  "<div class='card post'>" +
                                     "<img class='main_img' src='/storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
                                     "<div class='content'>" +
                                         "<div class='user'>" +
@@ -356,5 +427,33 @@
             <div id="line-3" class="line line-3">
                     
         </div>
+
+</div>
+<div id="challange-wrapper" class="wrapper profileWrapper">
+        
+    <div id="line-1-challange" class="line line-1">
+            <div  id="newChallange" class="newCard">
+                    <?php echo Form::open(['action' => 'ChallangesController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']); ?>
+
+                    <?php echo e(Form::text('title', '', array("class" => "newPostTitle", "placeholder" => 'Title'))); ?>
+
+                    <?php echo e(Form::textarea('description', '', array("class" => "newPostText", "placeholder" => 'Description'))); ?>
+
+                    <?php echo e(Form::date('deadline', '', array("class" => "newPostText", "placeholder" => 'Deadline'))); ?>
+
+                    <?php echo e(Form::textarea('reward', '', array("class" => "newPostText", "placeholder" => 'Reward'))); ?>
+
+                    <?php echo e(Form::textarea('whoWins', '', array("class" => "newPostText", "placeholder" => 'Who Wins'))); ?>
+
+                    <?php echo e(Form::submit('Submit', array("class" => "button"))); ?>
+
+                    <?php echo Form::close(); ?>
+
+            </div>
+    </div>
+    <div id="line-2-challange" class="line line-2"></div>
+    <div id="line-3-challange" class="line line-3"></div>
+</div>
+  
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

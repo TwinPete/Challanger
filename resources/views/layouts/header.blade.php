@@ -48,7 +48,7 @@
 
     @yield('content')
     
-<script src="{{ asset('js/min.js') }}"></script>
+
 
 </body>
 </html>

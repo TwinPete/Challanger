@@ -233,7 +233,7 @@
                                 continue;
                             }
                             
-                            document.getElementById("line-" + i).innerHTML +=  "<div class='post'>" +
+                            document.getElementById("line-" + i).innerHTML +=  "<div class='card post'>" +
                                     "<img class='main_img' src='../storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
                                     "<div class='content'>" +
                                         "<div class='user'>" +

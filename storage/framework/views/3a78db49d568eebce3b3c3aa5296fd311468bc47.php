@@ -2,15 +2,15 @@
 <div id="menu">
     <ul>
         <li>Highest Rated</li>
-        <li class="active">Newest</li>
+        <li class="activeMenu">Newest</li>
         <li>Personalized</li>
         <li>Personalized</li>
         <li>Create New</li>
     </ul>
 </div>
 <div class="mobile_menu">
-    <ul class="activeMenu">
-        <li class="active">Highest Rated</li>
+    <ul class="currentMobileMenu">
+        <li class="activeMenuMobile">Highest Rated</li>
     </ul>
     <ul class="dropdown_menu">
         <li>Newest</li>
@@ -21,11 +21,11 @@
 </div>
 <div class="titles">
     <ul>
-        <li>Profiles</li>
+        <li id="profiles">Profiles</li>
     </ul>
     <ul>
-        <li class="active">Posts</li>
-        <li>Challanges</li>
+        <li id="posts" class="active">Posts</li>
+        <li id="challanges">Challanges</li>
     </ul>
 </div>
 <div class="mobile_titles">
@@ -37,7 +37,7 @@
         <li>Challanges</li>
     </ul>
 </div>
-<div class="wrapper">
+<div id="post-wrapper" class="wrapper">
 <p id="counter">
     <?php echo e($counter); ?>
 
@@ -52,7 +52,46 @@
 
         <script>
 
-            // Php Variabeln in JavaScript Variabeln umwandeln
+            // Event Listener und Funktionen für Menu
+
+            document.getElementById('posts').addEventListener('click', posts);
+            document.getElementById('challanges').addEventListener('click', challanges);
+            document.getElementById('profiles').addEventListener('click', profiles);
+
+            function posts(){
+
+                // Alle anderen wrapper ausblenden
+
+                var challangeWrapper = document.getElementById('challange-wrapper').style.display = "none";
+                var profileWrapper = document.getElementById('profile-wrapper').style.display = "none";
+
+                // Posts laden
+
+                var postWrapper = document.getElementById('post-wrapper');
+                postWrapper.style.display = "flex";
+                initialize("Posts");
+
+            }
+            function challanges(){
+
+                // Alle anderen wrapper ausblenden
+
+                var postWrapper = document.getElementById('post-wrapper').style.display = "none";
+                alert("challanges are initialized");
+
+                // Challanges laden
+
+                var challangeWrapper = document.getElementById('challange-wrapper');
+                challangeWrapper.style.display = "flex";
+                challangeWrapper.innerHTML = "<h1 marginTop='20rem'>Challanges werden geladen...</h2>";
+                initialize("Challanges");
+            }
+            function profiles(){
+                
+            }
+
+
+            // Php Variabeln für Posts in JavaScript Variabeln umwandeln
 
             var posts = <?php echo json_encode($posts->toArray()); ?>;
             var users = <?php echo json_encode($users); ?>;
@@ -75,29 +114,57 @@
 
 
 
-            // Beim Laden der Seiten wird folgende Funktion aufgerufen, die entsprechend der jeweiligen Bildschirmgröße die Posts anordnet
+            // Beim Laden der Seiten wird folgende Funktion aufgerufen, die entsprechend der Menuauswahl und der jeweiligen Bildschirmgröße die Posts/challanges oder Profile anordnet
+            
+            // zuerst wird abgefragt, welcher Menupunkt gerade aktiv ist und damit ob Posts,Challanges oder Profile geladen werden sollen
+            
+            var loadType = document.getElementsByClassName('active')[0].innerHTML;
+            initialize(loadType);
 
-            document.addEventListener("DOMContentLoaded", function(event){
+            function initialize(type){
 
-                // Abfragen, welche Größe der Bildschirm hat, um die entsprechende Funktion aufzurufen
+                document.addEventListener("DOMContentLoaded", function(event){
 
-                var window = document.documentElement.clientWidth;
-                // alert(window);
+                    // Abfragen, welche Größe der Bildschirm hat, um die entsprechende Funktion aufzurufen
 
-                if(window >= 1150){
-                    load_lines(3);
-                }
-                if(window <= 1150 && window > 773){
-                    load_lines(2);
-                }
+                    var window = document.documentElement.clientWidth;
+                    // alert(window);
 
-                if(window <= 773){
-                    
-                    load_lines(1);
-                    // alert("jetzt");
-                }
+                    if(window >= 1150){
+                        if(type == "Posts"){
+                            load_lines(3);
+                        }else if(type == "Challanges"){
+                            load_lines_challange(3);
+                        }else{
+                            load_lines_profile(3);
+                        }
+                        
+                    }
+                    if(window <= 1150 && window > 773){
+                        if(type = "posts"){
+                            load_lines(2);
+                        }else if(type == "challanges"){
+                            load_lines_challange(1);
+                        }else{
+                            load_lines_profile(1);
+                        }
+                    }
+
+                    if(window <= 773){
+                        if(type = "posts"){
+                            load_lines(1);
+                        }else if(type == "challanges"){
+                            load_lines_challange(1);
+                        }else{
+                            load_lines_profile(1);
+                        }
+                    }
 
             });
+
+            }
+
+            
 
             // Abfragen für Verkleinerungen des Bildschirms
 
@@ -125,10 +192,18 @@
             console.log("Funktion wird gleich gestartet");
             // Ladefunktionen für die Posts
 
+            function load_lines_challange(){
+                alert("challanges werden geladen");
+            }
+            function load_lines_profile(){
+                alert("profiles werden geladen");
+            }
+
             function load_lines(lines){
                 console.log("Funktion wird gestartet");
-                
-                
+
+
+                // Posts nacheinander erstellen
 
                 for(var i = 1; i <= lines; i++){
                     if(counter_3 > (posts.length - 1 )){
@@ -179,9 +254,17 @@
                         i = 1;
                     }
 
-                    
+                     // Line holen
 
-                    document.getElementById("line-" + i).innerHTML +=  "<div class='post'>" +
+                    var line = document.getElementById("line-" + i);
+
+                    // line leeren bzw. zurücksetzen
+
+                    //line.innerHTML = "";
+
+                    // line mit Inhalten füllen
+
+                    line.innerHTML +=  "<div class='card post'>" +
                             "<img class='main_img' src='../storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
                             "<div class='content'>" +
                                 "<div class='user'>" +
@@ -301,5 +384,16 @@
 <div class="loadMoreWrapper">
         <button id="loadMore" class="loadMore">Load More</button>     
 </div>
+
+<div id="challange-wrapper">
+    <div id="line-1-challange" class="line line-1"></div> 
+    <div id="line-2-challange" class="line line-2"></div>
+    <div id="line-3-challange" class="line line-3"></div>
+</div>
+<div id="profile-wrapper">
+        <div id="line-1-challange" class="line line-1"></div> 
+        <div id="line-2-challange" class="line line-2"></div>
+        <div id="line-3-challange" class="line line-3"></div>
+    </div>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -38,16 +38,22 @@ class ChallangesController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'text' => 'required',
+            'description' => 'required',
+            'deadline' => 'required',
+            'reward' => 'required',
+            'whoWins' => 'required'
         ]);
 
         $challange = new Challange;
         $challange->userId = auth()->user()->id;
         $challange->title = $request->input('title');
-        $challange->text = $request->input('text');
+        $challange->description = $request->input('description');
+        $challange->deadline = $request->input('deadline');
+        $challange->reward = $request->input('reward');
+        $challange->whoWins = $request->input('whoWins');
         $challange->save();
 
-        return redirect('/profile');
+        return redirect('/profile2');
     }
 
     /**

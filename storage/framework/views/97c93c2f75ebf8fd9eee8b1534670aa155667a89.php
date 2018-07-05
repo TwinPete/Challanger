@@ -49,7 +49,7 @@
 
     <?php echo $__env->yieldContent('content'); ?>
     
-<script src="<?php echo e(asset('js/min.js')); ?>"></script>
+
 
 </body>
 </html>
