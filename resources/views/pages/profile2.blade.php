@@ -42,7 +42,7 @@
     </div>
 <div id="post-wrapper" class="wrapper profileWrapper">
         
-            <div id="line-1" class="line line-1">
+            <div id="line-1-Posts" class="line line-1">
                     
                  @if(!Auth::guest()) 
                   
@@ -74,7 +74,7 @@
                     </div>
                  @endif  
             </div> 
-            <div id="line-2" class="line line-2">
+            <div id="line-2-Posts" class="line line-2">
         
                 
         <script> console.log("los gehts");</script>
@@ -83,11 +83,21 @@
 
                     // Event Listener und Funktionen für Menu
                     console.log("1");
-                    document.getElementById('posts').addEventListener('click', posts);
+                    var postElement = document.getElementById('posts');
+                    postElement.addEventListener('click', posts);
                     console.log("2");
-                    document.getElementById('challanges').addEventListener('click', challanges);
+                    var challangeElement = document.getElementById('challanges');
+                    challangeElement.addEventListener('click', challanges);
 
                     function posts(){
+
+                    // Alle anderen Menupunkte auf zurücksetzen
+
+                    challangeElement.classList[0] = "";
+
+                    // Posts auf activ setzen
+
+                    postElement.classList.add("active");
 
                     // Alle anderen wrapper ausblenden
                     console.log("3");
@@ -101,7 +111,15 @@
 
                     }
                     function challanges(){
-                        
+
+                    // Alle anderen Menupunkte auf zurücksetzen
+
+                    postElement.classList[0] = "";
+                    
+                    // Challanges auf activ setzen
+
+                    challangeElement.classList.add("active");
+                     console.log("classlist von ChalangeMenu " + challangeElement.classList[0]);
                     // Alle anderen wrapper ausblenden
                     console.log("5");
                     var postWrapper = document.getElementById('post-wrapper').style.display = "none";
@@ -120,7 +138,7 @@
                     }
 
                     
-                    document.getElementById('line-1').addEventListener("change", function(){
+                    document.getElementById('line-1-Posts').addEventListener("change", function(){
                         if(document.getElementById('f').files[0].name != ""){
                             var filename = document.getElementById('f').files[0].name;
                             //alert(filename);
@@ -169,12 +187,12 @@
                     // alert(auth);
                     
                     var posts = {!! json_encode($posts->toArray()) !!};
-                    //console.log(posts);
+                    
                     var user = {!! json_encode($user) !!};
-                    console.log(user.id);
+                   
                     // Id des aktuell angemeldeten Users
                     var authId = {!! json_encode(auth()->user('id')) !!};
-                    console.log("Auth Id:" + authId.id + "UserId:" + user.id);
+                    
 
                     var postComments = {!! json_encode($postComments) !!};
                     var postCommentsUsers = {!! json_encode($postCommentsUsers) !!};
@@ -200,8 +218,10 @@
 
             function initialize(type){
 
-                document.addEventListener("DOMContentLoaded", function(event){
+                alert("initialize" + type);
 
+                document.addEventListener("DOMContentLoaded", function(event){
+                    alert("Dom Content loaded");
                     // Abfragen, welche Größe der Bildschirm hat, um die entsprechende Funktion aufzurufen
 
                     var window = document.documentElement.clientWidth;
@@ -209,31 +229,33 @@
 
                     if(window >= 1150){
                         if(type == "Posts"){
-                            load_lines(3);
+                            alert("Hier scheint es noch hineinzugehen");
+                            load_lines(3, type);
                         }else if(type == "Challanges"){
-                            load_lines_challange(3);
+                            alert("scheint zu funktionieren bis zum 'WindowCheck");
+                            load_lines(3, type);
                         }else{
-                            load_lines_profile(3);
+                            load_lines(3, type);
                         }
                         
                     }
                     if(window <= 1150 && window > 773){
                         if(type = "posts"){
-                            load_lines(2);
+                            load_lines(2, type);
                         }else if(type == "challanges"){
-                            load_lines_challange(1);
+                            load_lines(1, type);
                         }else{
-                            load_lines_profile(1);
+                            load_lines(1, type);
                         }
                     }
 
                     if(window <= 773){
                         if(type = "posts"){
-                            load_lines(1);
+                            load_lines(1, type);
                         }else if(type == "challanges"){
-                            load_lines_challange(1);
+                            load_lines(1, type);
                         }else{
-                            load_lines_profile(1);
+                            load_lines(1, type);
                         }
                     }
 
@@ -266,18 +288,38 @@
         
                     console.log("Funktion wird gleich gestartet");
 
-                    function load_lines_challange(){
-                        alert("challanges werden geladen");
-                    }
-                    function load_lines_profile(){
-                        alert("profiles werden geladen");
-                    }
+                  
 
 
                     // Ladefunktionen für die Posts
         
-                    function load_lines(lines){
-                        console.log("Funktion wird gestartet");
+                    function load_lines(lines, type){
+                        alert("Funktion wird gestartet mit" + type);
+
+                        // Zuerst wird bestiimmt, welche Art von 'Inhalt erzeugt werden soll
+
+                        // in die Variable Content werden die entsprechenden Inhalte geladen
+                        var content;
+                        var comments;
+                        var commentUsers;
+
+                        if(type == "Posts"){
+                            content = posts;
+                            comments = postComments;
+                            commentUsers = postCommentsUsers;
+                        }else if(lines == "Challanges"){
+                            alert("challanges werden geladen");
+                            console.log("Challanges werden geladen");
+                            //content = challanges;
+                            content = posts;
+                            comments = postComments;
+                            commentUsers = postCommentsUsers;
+                        }else{
+                            console.log("Profile werden geladen");
+                        }
+
+
+
                         // Trigger wird auf true gesetzt, falls es sich um das Profil des jeweiligen Users handelt ...
                         // ... bzw. falls die User AUthentifizierungsnummer identiasch mit der Profilnummer ist
                         if(authId != null){
@@ -327,80 +369,119 @@
                                 trigger = false;
                                 continue;
                             }
+
+                            // Line holen
+
+                            var line = document.getElementById("line-" + i + "-" + type);
+
+                            // erneut abfragen, welcher Inhalt geladen wird
+
+                            if(type == "Posts"){
                             
-                            document.getElementById("line-" + i).innerHTML +=  "<div class='card post'>" +
-                                    "<img class='main_img' src='/storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
-                                    "<div class='content'>" +
-                                        "<div class='user'>" +
-                                            "<img src='../storage/userPics/" +  user.userPic  + "' alt='No Pic found' />" +
-                                            "<p>"+ user.username +"</p>" +
-                                            "<l>" + posts[counter_3].updated_at + "</l>" +
-                                        "</div>" +
-                                        "<h1>"+ posts[counter_3].title +"</h1>" +
-                                        "<p class='posttext'> "+ posts[counter_3].text +"</p>" +
-                                        "<div class='options'>" +
-                                            "<div class='option'>" +
-                                                    "<img src='/storage/res/like.svg' alt=''>" + 
-                                                    "<p>Like</p>" + 
-                                            "</div>" + 
-                                            "<div class='option'>" +
-                                                    "<img src='/storage/res/share.svg' alt=''>" +
-                                                    "<p>Share</p>" +
+                                line.innerHTML +=  "<div class='card post'>" +
+                                        "<img class='main_img' src='/storage/postMedia/" + content[counter_3].media  + "'alt='No Pic found'>" +
+                                        "<div class='content'>" +
+                                            "<div class='user'>" +
+                                                "<img src='../storage/userPics/" +  user.userPic  + "' alt='No Pic found' />" +
+                                                "<p>"+ user.username +"</p>" +
+                                                "<l>" + content[counter_3].updated_at + "</l>" +
                                             "</div>" +
-                                            "<div class='option'>" +
-                                                    "<img src='/storage/res/comment.svg' alt=''>" +
-                                                    "<p>Comment</p>" +
+                                            "<h1>"+ content[counter_3].title +"</h1>" +
+                                            "<p class='posttext'> "+ content[counter_3].text +"</p>" +
+                                            "<div class='options'>" +
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/like.svg' alt=''>" + 
+                                                        "<p>Like</p>" + 
+                                                "</div>" + 
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/share.svg' alt=''>" +
+                                                        "<p>Share</p>" +
+                                                "</div>" +
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/comment.svg' alt=''>" +
+                                                        "<p>Comment</p>" +
+                                                "</div>" +
                                             "</div>" +
-                                        "</div>" +
-                                        "<div class='postStats'>" +
-                                            "<p>1000 Likes</p>" +
-                                            "<p>" + postComments[posts[counter_3].id].length + " Comments</p>" +
-                                            "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
-                                        "</div>" +
-                                        "<div class='comments'>" +
-                                            "<form action='/postComment' method='POST' enctype='multipart/form-data'>" +
-                                                " <input type='hidden' name='_token' value='{{ csrf_token() }}'> " +
-                                               
-                                                "<div class='commentInput'>" +
-                                                    "<textarea name='comment' placeholder='write a comment'></textarea>" +
-                                                    "<input class='postIdForComment' name='postId' type='text' value='"+ posts[counter_3].id +"'>" +
-                                                    "<input class='userIdForComment' name='userId' type='hidden' value='"+ authId.id +"'>" +
-                                                    "<div class='icons'>" +
-                                                        "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
-                                                        "<img src='/storage/res/paperclip.svg' alt='No Pic found'>" +
-                                                        "<img src='/storage/res/camera.svg' alt='No Pic found'>" +
+                                            "<div class='postStats'>" +
+                                                "<p>1000 Likes</p>" +
+                                                "<p>" + comments[content[counter_3].id].length + " Comments</p>" +
+                                                "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
+                                            "</div>" +
+                                            "<div class='comments'>" +
+                                                "<form action='/postComment' method='POST' enctype='multipart/form-data'>" +
+                                                    " <input type='hidden' name='_token' value='{{ csrf_token() }}'> " +
+                                                
+                                                    "<div class='commentInput'>" +
+                                                        "<textarea name='comment' placeholder='write a comment'></textarea>" +
+                                                        "<input class='postIdForComment' name='postId' type='text' value='"+ content[counter_3].id +"'>" +
+                                                        "<input class='userIdForComment' name='userId' type='hidden' value='"+ authId.id +"'>" +
+                                                        "<div class='icons'>" +
+                                                            "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
+                                                            "<img src='/storage/res/paperclip.svg' alt='No Pic found'>" +
+                                                            "<img src='/storage/res/camera.svg' alt='No Pic found'>" +
+                                                        "</div>" +
                                                     "</div>" +
-                                                "</div>" +
-                                                "<input class='postComment' type='submit' value='Post Comment'>" +
-                                            "</form>" +
-                                            
-                                            "<div id='commentList_"+ posts[counter_3].id +"' class='commentList'>" +
-                                                    
-                                                "</div>" +
-                                            
-                                                "</div>" +
+                                                    "<input class='postComment' type='submit' value='Post Comment'>" +
+                                                "</form>" +
+                                                
+                                                "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
+                                                        
+                                                    "</div>" +
+                                                
+                                                    "</div>" +
+                                            "</div>" +
+                                        "</div>"; 
+
+                            }else if(type == "Challanges"){
+                                alert("bin grad in der Line: " + "line-" + i + "-" + type)
+                                line.innerHTML +=  "<div class='card'><h1>Challange</h1>" +
+                                "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
+                                        "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
+                                                        
                                         "</div>" +
-                                    "</div>"; 
+                                    "</div>" ;
+                            }
 
 
-                                                console.log("Aktuelles Bild heißt: " + posts[counter_3].media);
+
+                                                console.log("Aktuelles Bild heißt: " + content[counter_3].media);
                                     // Kommentare einfügen
-                                    var commentsCount = postComments[posts[counter_3].id].length;
+
+                                    // Kommentare werden gezählt
+
+                                    var commentsCount = comments[content[counter_3].id].length;
+
+                                    
+                                    // es wird eine Variable für die CommentList Identifikation erzeugt
+
+                                    var commentList = type + "CommentList_";
+
+                                    // Dann wird erneut abgefragt, um welche Art von Inhalt es sich handelt
+                                    
+                                    // if(type == "Posts"){
+                                    //     commentList = "postCommentList_";
+                                    // }else if(type == "Challanges"){
+                                    //     commentList = "challangeCommentList_";
+                                    // }else{
+                                    //     commentList = "profileCommentList_";
+                                    // }
+                                    
+
                                     //console.log("aktuellesUserPic: " + postCommentsUsers[1][0].userPic);
                                         if(commentsCount > 0){
                                             
                                             console.log("Array in diesem Durchgang größer als 0");
                                             for(var x = 0; x < commentsCount; x++){
-                                                var commentUser = postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id];
+                                                var commentUser = commentUsers[content[counter_3].id][comments[content[counter_3].id][x].id];
                                                 if(commentUser != null){
                                                 // console.log("erster Durchgang: Post: " + posts[counter_3] + " Commentar: " + postComments[posts[counter_3].id][0] );
-                                            document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
+                                            document.getElementById(commentList + content[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
                                                                 "<a href='/profile/"+commentUser.id+"'><img class='userImg' src='/storage/userPics/" + commentUser.userPic + "' alt=''></a>" +
                                                                 "<a href='/profile/"+commentUser.id+"'><p class='commentUsername'>"+ commentUser.username +"</p></a>" +
-                                                                "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
+                                                                "<i class='timestamp'>commented at"+ comments[content[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
-                                                            "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +
+                                                            "<p class='commentText'>"+ comments[content[counter_3].id][x].comment +"</p>" +
                                                             "<div class='commentStats'>" +
                                                                 "<img src='/storage/res/camera.svg' alt='No Pic Found'>" +
                                                                 "<p>Likes: 300</p>" + 
@@ -449,14 +530,14 @@
                 @endif --}}
                
             </div> 
-            <div id="line-3" class="line line-3">
+            <div id="line-3-Posts" class="line line-3">
                     
         </div>
 
 </div>
 <div id="challange-wrapper" class="wrapper profileWrapper">
         
-    <div id="line-1-challange" class="line line-1">
+    <div id="line-1-Challanges" class="line line-1">
             <div  id="newChallange" class="newCard">
                     {!! Form::open(['action' => 'ChallangesController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                     {{ Form::text('title', '', array("class" => "newPostTitle", "placeholder" => 'Title'))}}
@@ -468,8 +549,10 @@
                     {!! Form::close() !!}
             </div>
     </div>
-    <div id="line-2-challange" class="line line-2"></div>
-    <div id="line-3-challange" class="line line-3"></div>
+    <div id="line-2-Challanges" class="line line-2">
+
+    </div>
+    <div id="line-3-Challanges" class="line line-3"></div>
 </div>
   
 @endsection

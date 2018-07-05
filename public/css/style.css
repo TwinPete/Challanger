@@ -290,8 +290,8 @@ body {
 }
 
 .wrapper{
-    /* display: flex; */
-    display: none;
+    display: flex;
+    /* display: none; */
     justify-content: center;
     margin: 4rem auto;
     margin-top: 18rem;
@@ -304,8 +304,8 @@ body {
 }
 
 #challange-wrapper{
-    /* display: none; */
-    display: flex;
+    display: none;
+    /* display: flex; */
 }
 
 #profile-wrapper{
