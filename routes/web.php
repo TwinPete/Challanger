@@ -23,6 +23,7 @@ Route::resource('posts', 'PostsController');
 Route::resource('postComment', 'PostCommentController');
 
 Route::resource('challanges', 'ChallangesController');
+Route::get('/startChallange/{id}', 'ChallangesController@start');
 
 Route::post('/createPost', 'PostsController@store');
 

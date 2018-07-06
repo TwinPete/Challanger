@@ -43,10 +43,10 @@
 <p id="counter">
     {{ $counter }}
 </p>
-    <div id="line-1" class="line line-1">
+    <div id="line-1-Posts" class="line line-1">
              
     </div> 
-    <div id="line-2" class="line line-2">
+    <div id="line-2-Posts" class="line line-2">
 
         
 <script> console.log("los gehts");</script>
@@ -55,11 +55,23 @@
 
             // Event Listener und Funktionen für Menu
 
-            document.getElementById('posts').addEventListener('click', posts);
-            document.getElementById('challanges').addEventListener('click', challanges);
-            document.getElementById('profiles').addEventListener('click', profiles);
+            var postElement = document.getElementById('posts');
+            postElement.addEventListener('click', posts);
+                    
+            var challangesInitialized = false;
+            var challangeElement = document.getElementById('challanges');
+            challangeElement.addEventListener('click', challanges);
 
             function posts(){
+
+                // Alle anderen Menupunkte auf zurücksetzen
+
+                challangeElement.classList.remove("active");
+                
+
+                // Posts auf activ setzen
+
+                postElement.classList.add("active")
 
                 // Alle anderen wrapper ausblenden
 
@@ -70,22 +82,41 @@
 
                 var postWrapper = document.getElementById('post-wrapper');
                 postWrapper.style.display = "flex";
-                initialize("Posts");
+                //initialize("Posts");
 
             }
             function challanges(){
 
+                // Alle anderen Menupunkte auf zurücksetzen
+
+                postElement.classList.remove("active");
+                
+
+                // Challanges auf activ setzen
+
+                challangeElement.classList.add("active");
+
                 // Alle anderen wrapper ausblenden
 
                 var postWrapper = document.getElementById('post-wrapper').style.display = "none";
-                alert("challanges are initialized");
+                var profileWrapper = document.getElementById('profile-wrapper').style.display = "none";
+                // alert("challanges are initialized");
 
                 // Challanges laden
 
                 var challangeWrapper = document.getElementById('challange-wrapper');
                 challangeWrapper.style.display = "flex";
-                challangeWrapper.innerHTML = "<h1 marginTop='20rem'>Challanges werden geladen...</h2>";
-                initialize("Challanges");
+
+                console.log("posts aufgelistet");
+                console.log(posts);
+                console.log("challanges aufgelistet");
+                console.log(challanges);
+    
+                if(!challangesInitialized){
+                        initialize("Challanges");
+                    }
+                challangesInitialized = true;
+                    
             }
             function profiles(){
                 
@@ -95,14 +126,16 @@
             // Php Variabeln für Posts in JavaScript Variabeln umwandeln
 
             var posts = {!! json_encode($posts->toArray()) !!};
-            var users = {!! json_encode($users) !!};
-            console.log(users[2]);
+            var postUsers = {!! json_encode($postUsers) !!};
+            
             var authId = {!! json_encode(auth()->user('id')) !!};
             var postComments = {!! json_encode($postComments) !!};
             var postCommentsUsers = {!! json_encode($postCommentsUsers) !!};
-            console.log("Comment User: ");
-            console.log(postCommentsUsers);
-            console.log(postComments)
+            
+            var challanges = {!! json_encode($challanges->toArray()) !!};
+            var challangeUsers = {!! json_encode($challangeUsers) !!};
+            var challangeComments = {!! json_encode($challangeComments) !!};
+            var challangeCommentsUsers = {!! json_encode($challangeCommentsUsers) !!};
             
             // Source der Bilder für die jeweiligen Posts
 
@@ -120,11 +153,15 @@
             // zuerst wird abgefragt, welcher Menupunkt gerade aktiv ist und damit ob Posts,Challanges oder Profile geladen werden sollen
             
             var loadType = document.getElementsByClassName('active')[0].innerHTML;
-            initialize(loadType);
+            document.addEventListener("DOMContentLoaded", function(event){
+               
+               initialize(loadType);
+
+            });
 
             function initialize(type){
 
-                document.addEventListener("DOMContentLoaded", function(event){
+                
 
                     // Abfragen, welche Größe der Bildschirm hat, um die entsprechende Funktion aufzurufen
 
@@ -133,35 +170,33 @@
 
                     if(window >= 1150){
                         if(type == "Posts"){
-                            load_lines(3);
+                            load_lines(3, type);
                         }else if(type == "Challanges"){
-                            load_lines_challange(3);
+                            load_lines(3, type);
                         }else{
-                            load_lines_profile(3);
+                            load_lines(3, type);
                         }
                         
                     }
                     if(window <= 1150 && window > 773){
                         if(type = "posts"){
-                            load_lines(2);
+                            load_lines(2, type);
                         }else if(type == "challanges"){
-                            load_lines_challange(1);
+                            load_lines(2, type);
                         }else{
-                            load_lines_profile(1);
+                            load_lines(2, type);
                         }
                     }
 
                     if(window <= 773){
                         if(type = "posts"){
-                            load_lines(1);
+                            load_lines(1, type);
                         }else if(type == "challanges"){
-                            load_lines_challange(1);
+                            load_lines(1, type);
                         }else{
-                            load_lines_profile(1);
+                            load_lines(1, type);
                         }
                     }
-
-            });
 
             }
 
@@ -193,21 +228,43 @@
             console.log("Funktion wird gleich gestartet");
             // Ladefunktionen für die Posts
 
-            function load_lines_challange(){
-                alert("challanges werden geladen");
-            }
-            function load_lines_profile(){
-                alert("profiles werden geladen");
-            }
+            
 
-            function load_lines(lines){
-                console.log("Funktion wird gestartet");
+            function load_lines(lines, type){
+                console.log("Funktion wird gestartet mit " + type);
+                // als Zweites wird bestimmt, welche Art von Inhalt erzeugt werden soll
 
+                        // in die Variable Content werden die entsprechenden Inhalte geladen
+                        var content;
+                        var users;
+                        var comments;
+                        var commentUsers;
+
+                        if(type == "Posts"){
+                            counter_3 = 0;
+
+                            content = posts;
+                            users = postUsers;
+                            comments = postComments;
+                            commentUsers = postCommentsUsers;
+                        }else if(type == "Challanges"){
+                            
+                            console.log("Challanges werden geladen");
+                            counter_3 = 0;
+                            users = challangeUsers;
+                            content = challanges;
+                            comments = challangeComments;
+                            commentUsers = challangeCommentsUsers;
+                            console.log("username ist: ");
+                            console.log(users);
+                        }else{
+                            console.log("Profile werden geladen");
+                        }
 
                 // Posts nacheinander erstellen
 
                 for(var i = 1; i <= lines; i++){
-                    if(counter_3 > (posts.length - 1 )){
+                    if(counter_3 > (content.length - 1 )){
 
                         // Alle Event Listener vergeben
 
@@ -234,7 +291,7 @@
                                     commentDropdowns[i].classList.add("cd" + i)
                                        commentDropdowns[i].addEventListener('click', function(){
                                           
-                                           var commentsNr = this.classList[1].charAt(2);
+                                           var commentsNr = this.classList[1].slice(2);
                                            var c = comments[commentsNr].classList;
                                            if(c.length <= 1){
                                                 this.style.transform = "rotate(0deg)";
@@ -257,65 +314,126 @@
 
                      // Line holen
 
-                    var line = document.getElementById("line-" + i);
+                    var line = document.getElementById("line-" + i + "-" + type);
 
                     // line leeren bzw. zurücksetzen
 
-                    //line.innerHTML = "";
+                    // abfragen, mit welchen Inhalzten line gefüllt werden soll: Posts, challanges, posts?
 
-                    // line mit Inhalten füllen
+                    
 
-                    line.innerHTML +=  "<div class='card post'>" +
-                            "<img class='main_img' src='../storage/postMedia/" +  posts[counter_3].media  + "'alt='No Pic found'>" +
-                            "<div class='content'>" +
-                                "<div class='user'>" +
-                                    "<a href='/profile/" +users[posts[counter_3].id][0].id + "'><img src='../storage/userPics/" +  users[posts[counter_3].id][0].userPic  + "' alt='No Pic found' /></a>" +
-                                    "<a href='/profile/" +users[posts[counter_3].id][0].id + "'><p>"+ users[posts[counter_3].id][0].username +"</p></a>" +
-                                    "<l>09.09.2019</l>" +
-                                "</div>" +
-                                "<h1>"+ posts[counter_3].title +"</h1>" +
-                                "<p class='posttext'> "+ posts[counter_3].text +"</p>" +
-                                    "<div class='options'>" +
-                                            "<div class='option'>" +
-                                                    "<img src='/storage/res/like.svg' alt=''>" + 
-                                                    "<p>Like</p>" + 
-                                            "</div>" + 
-                                            "<div class='option'>" +
-                                                    "<img src='/storage/res/share.svg' alt=''>" +
-                                                    "<p>Share</p>" +
+                    if(type == "Posts"){
+
+                        // line mit Inhalten füllen
+
+                        line.innerHTML +=  "<div class='card post'>" +
+                                "<img class='main_img' src='../storage/postMedia/" +  content[counter_3].media  + "'alt='No Pic found'>" +
+                                "<div class='content'>" +
+                                    "<div class='user'>" +
+                                        "<a href='/profile/" +users[content[counter_3].id][0].id + "'><img src='../storage/userPics/" +  users[content[counter_3].id][0].userPic  + "' alt='No Pic found' /></a>" +
+                                        "<a href='/profile/" +users[content[counter_3].id][0].id + "'><p>"+ users[content[counter_3].id][0].username +"</p></a>" +
+                                        "<l>09.09.2019</l>" +
+                                    "</div>" +
+                                    "<h1>"+ content[counter_3].title +"</h1>" +
+                                    "<p class='posttext'> "+ content[counter_3].text +"</p>" +
+                                        "<div class='options'>" +
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/like.svg' alt=''>" + 
+                                                        "<p>Like</p>" + 
+                                                "</div>" + 
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/share.svg' alt=''>" +
+                                                        "<p>Share</p>" +
+                                                "</div>" +
+                                                "<div class='option'>" +
+                                                        "<img src='/storage/res/comment.svg' alt=''>" +
+                                                        "<p>Comment</p>" +
+                                                "</div>" +
                                             "</div>" +
-                                            "<div class='option'>" +
-                                                    "<img src='/storage/res/comment.svg' alt=''>" +
-                                                    "<p>Comment</p>" +
+                                            "<div class='postStats'>" +
+                                                "<p>1000 Likes</p>" +
+                                                "<p>" + comments[content[counter_3].id].length + " Comments</p>" +
+                                                "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
                                             "</div>" +
-                                        "</div>" +
-                                        "<div class='postStats'>" +
-                                            "<p>1000 Likes</p>" +
-                                            "<p>" + postComments[posts[counter_3].id].length + " Comments</p>" +
-                                            "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
-                                        "</div>" +
-                                        "<div class='comments'>" +
-                                            "<form id='commentForm_"+posts[counter_3].id+"' action='/postComment' method='POST' enctype='multipart/form-data'>" +
-                                                
-                                            "</form>" +
-                                            
-                                            "<div id='commentList_"+ posts[counter_3].id +"' class='commentList'>" +
+                                            "<div class='comments'>" +
+                                                "<form id='"+ type +"CommentForm_"+content[counter_3].id+"' action='/postComment' method='POST' enctype='multipart/form-data'>" +
                                                     
-                                                "</div>" +
-                                            
-                                                "</div>" +
-                                            
-                            "</div>" +
-                        "</div>"; 
+                                                "</form>" +
+                                                
+                                                "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
+                                                        
+                                                    "</div>" +
+                                                
+                                                    "</div>" +
+                                                
+                                "</div>" +
+                            "</div>"; 
+                    }else if(type == "Challanges"){
+                        //var n = counter_3+1;
+                        //console.log("n ist: " + n);
+                               console.log("challanges werden initialisiert");
+                               console.log("counter ist: " + counter_3);
+                               //var hilf = counter_3;
+                               console.log("User ist: ");
+                            //    console.log(users[counter_3][0].username + " und counter immer noch: " + counter_3);
+                            //    console.log("Content an der stelle counter_3");
+                               console.log(content);
+                               line.innerHTML +=  "<div class='card post'>" +
+                                       "<div class='content'>" +
+                                           "<div class='user'>" +
+                                                "<a href='/profile/" +users[content[counter_3].id][0].id + "'><img src='../storage/userPics/" +  users[content[counter_3].id][0].userPic  + "' alt='No Pic found' /></a>" +
+                                                "<a href='/profile/" +users[content[counter_3].id][0].id + "'><p>"+ users[content[counter_3].id][0].username +"</p></a>" +
+                                               "<l>" + content[counter_3].updated_at + "</l>" +
+                                           "</div>" +
+                                           "<h1>"+ content[counter_3].title +"</h1>" +
+                                           "<p class='posttext'> "+ content[counter_3].text +"</p>" +
+                                           "<p class='reward'>Participants: 46</p>" +
+                                           "<p class='reward'>Reward: 500$</p>" +
+                                           "<p class='deadline'>Deadline:<span> 20.09.2018 at 15:30pm </span></p>" +
+                                           "<div class='buttonWrapper'><button class='button'> Accept Challange </button></div>" +
+                                           "<div class='options'>" +
+                                               "<div class='option'>" +
+                                                       "<img src='/storage/res/like.svg' alt=''>" + 
+                                                       "<p>Like</p>" + 
+                                               "</div>" + 
+                                               "<div class='option'>" +
+                                                       "<img src='/storage/res/share.svg' alt=''>" +
+                                                       "<p>Share</p>" +
+                                               "</div>" +
+                                               "<div class='option'>" +
+                                                       "<img src='/storage/res/comment.svg' alt=''>" +
+                                                       "<p>Comment</p>" +
+                                               "</div>" +
+                                           "</div>" +
+                                           "<div class='postStats'>" +
+                                               "<p>1000 Likes</p>" +
+                                               "<p>" + comments[content[counter_3].id].length + " Comments</p>" +
+                                               "<img class='commentDropdown' src='/storage/res/dropdown.png' alt='No Pic found' />" + 
+                                           "</div>" +
+                                           "<div class='comments'>" +
+                                               "<form id='"+ type +"CommentForm_"+content[counter_3].id+"' action='/postComment' method='POST' enctype='multipart/form-data'>" +
+                                                   
+                                               "</form>" +
+                                               
+                                               "<div id='"+ type +"CommentList_"+ content[counter_3].id +"' class='commentList'>" +
+                                                       
+                                                   "</div>" +
+                                               
+                                                   "</div>" +
+                                           "</div>" +
+                                       "</div>"; 
+                           }
+
+
 
                         // Kommentar schreiben Input einfügen
 
                         if(authId != null){
                             console.log("geht zumindest in die Funkiton. AuthId: " + authId.id);
-                            document.getElementById("commentForm_"+ posts[counter_3].id).innerHTML = " <input type='hidden' name='_token' value='{{ csrf_token() }}'> " +
+                            document.getElementById(type + "CommentForm_" + content[counter_3].id).innerHTML = " <input type='hidden' name='_token' value='{{ csrf_token() }}'> " +
                                                 "<div class='commentInput'>" +
                                                     "<textarea name='comment' placeholder='write a comment'></textarea>" +
-                                                    "<input class='postIdForComment' name='postId' type='text' value='"+ posts[counter_3].id +"'>" +
+                                                    "<input class='postIdForComment' name='postId' type='text' value='"+ content[counter_3].id +"'>" +
                                                     "<input class='userIdForComment' name='userId' type='hidden' value='"+ authId.id +"'>" +
                                                     "<div class='icons'>" +
                                                         "<img src='/storage/res/emoticon.svg' alt='No Pic found'>" +
@@ -328,28 +446,33 @@
                             console.log("Aktueller User ist nocht eingeloggt");
                         }
 
-                        console.log("Aktueller Post:" + posts[counter_3].title + " mit Postnummer: " + posts[counter_3].id);
+                        
                         
 
                          // Kommentare einfügen
-                         var commentsCount = postComments[posts[counter_3].id].length;
+                         var commentsCount = comments[content[counter_3].id].length;
+
+                         // es wird eine Variable für die CommentList Identifikation erzeugt
+
+                        var commentList = type + "CommentList_";
+
                                     
                                         if(commentsCount > 0){
                                             
                                             console.log("Array in diesem Durchgang größer als 0");
                                             for(var x = 0; x < commentsCount; x++){
-                                                var commentUser = postCommentsUsers[posts[counter_3].id][postComments[posts[counter_3].id][x].id];
+                                                var commentUser = commentUsers[content[counter_3].id][comments[content[counter_3].id][x].id];
                                                 if(commentUser != null){
                                                    
                                                 
                                                 // console.log("erster Durchgang: Post: " + posts[counter_3] + " Commentar: " + postComments[posts[counter_3].id][0] );
-                                                    document.getElementById("commentList_"+ posts[counter_3].id).innerHTML +=  "<div class='comment'>" +
+                                                    document.getElementById(commentList + content[counter_3].id).innerHTML +=  "<div class='comment'>" +
                                                             "<div class='commentUser'>" +
                                                                 "<a href='/profile/"+commentUser.id+"'><img class='userImg' src='/storage/userPics/" + commentUser.userPic + "' alt=''></a>" +
                                                                 "<a href='/profile/"+commentUser.id+"'><p class='commentUsername'>"+ commentUser.username +"</p></a>" +
-                                                                "<i class='timestamp'>commented at"+ postComments[posts[counter_3].id][x].created_at +"</i>" +
+                                                                "<i class='timestamp'>commented at"+ comments[content[counter_3].id][x].created_at +"</i>" +
                                                             "</div>" +
-                                                            "<p class='commentText'>"+ postComments[posts[counter_3].id][x].comment +"</p>" +
+                                                            "<p class='commentText'>"+ comments[content[counter_3].id][x].comment +"</p>" +
                                                             "<div class='commentStats'>" +
                                                                 "<img src='/storage/res/camera.svg' alt='No Pic Found'>" +
                                                                 "<p>Likes: 300</p>" + 
@@ -375,25 +498,26 @@
         </script>
        
     </div> 
-    <div id="line-3" class="line line-3">
+    <div id="line-3-Posts" class="line line-3">
 
     </div>
 
     
 
 </div>
-<div class="loadMoreWrapper">
-        <button id="loadMore" class="loadMore">Load More</button>     
-</div>
 
-<div id="challange-wrapper">
-    <div id="line-1-challange" class="line line-1"></div> 
-    <div id="line-2-challange" class="line line-2"></div>
-    <div id="line-3-challange" class="line line-3"></div>
+
+<div id="challange-wrapper" class="wrapper">
+    <div id="line-1-Challanges" class="line line-1"></div> 
+    <div id="line-2-Challanges" class="line line-2"></div>
+    <div id="line-3-Challanges" class="line line-3"></div>
 </div>
 <div id="profile-wrapper">
         <div id="line-1-challange" class="line line-1"></div> 
         <div id="line-2-challange" class="line line-2"></div>
         <div id="line-3-challange" class="line line-3"></div>
+    </div>
+    <div class="loadMoreWrapper">
+            <button id="loadMore" class="loadMore">Load More</button>     
     </div>
 @endsection

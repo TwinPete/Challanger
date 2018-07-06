@@ -8,6 +8,7 @@ use App\ChallangeComment;
 use App\Post;
 use App\User;
 use App\Challange;
+use App\Ccomment;
 
 class PagesController extends Controller
 {
@@ -17,13 +18,13 @@ class PagesController extends Controller
     public function landing()
     {
         $userId = auth()->user('id');
-        $users = array();
+        $postUsers = array();
         $posts = Post::orderBy('created_at', 'desc')->get();
         //$user = User::all();
-        $users = array();
+        
         
         foreach($posts as $post){
-            $users[$post->id] = User::where('Id', $post->userId)->get();
+            $postUsers[$post->id] = User::where('Id', $post->userId)->get();
         }
         $postComments = array();
         // foreach($posts as $post){
@@ -41,8 +42,30 @@ class PagesController extends Controller
                 }
             }
         $counter = count($posts);
-        return view('/pages/landing')->with('users', $users)->with('posts', $posts)->with('counter', $counter)->with('postComments', $postComments)
-        ->with('postCommentsUsers', $postCommentsUsers)->with('userId', $userId);
+
+            // Challanges
+
+        $challanges = Challange::where('isRunning', true)->orderBy('created_at', 'desc')->get();
+        $challangeUsers = array();
+        foreach($challanges as $challange){
+            $challangeUsers[$challange->id] = User::where('Id', $challange->userId)->get();
+        }
+        $challangeComments = array();
+        foreach($challanges as $challange){
+            $challangeComments[$challange->id] = Ccomment::where('challangeId', $challange->id)->get();
+        }
+        $challangeCommentsUsers = array();
+            foreach($challanges as $challange){
+                $challangeComments[$challange->id] = Ccomment::where('challangeId', $challange->id)->get();
+                foreach($challangeComments[$challange->id] as $comment){
+                    $challangeCommentsUsers[$challange->id][$comment->id] = User::find($comment->userId);
+                }
+            }
+
+
+        return view('/pages/landing')->with('postUsers', $postUsers)->with('posts', $posts)->with('counter', $counter)->with('postComments', $postComments)
+        ->with('postCommentsUsers', $postCommentsUsers)->with('userId', $userId)->with('challanges', $challanges)->with('challangeUsers', $challangeUsers)
+        ->with('challangeComments', $challangeComments)->with('challangeCommentsUsers', $challangeCommentsUsers);
         //return $posts[0]->id;
         //return $posts;
         //return $users;
@@ -53,6 +76,8 @@ class PagesController extends Controller
     public function profile2()
     {
         $user = auth()->user('id');
+
+        // Posts
         $posts = Post::where('userId', $user->id)->orderBy('created_at', 'desc')->get();
         $postComments = array();
         foreach($posts as $post){
@@ -69,9 +94,26 @@ class PagesController extends Controller
                     $postCommentsUsers[$post->id][$comment->id] = User::find($comment->userId);
                 }
             }
+
+        // Challanges
+
+        $challanges = Challange::where('userId', $user->id)->orderBy('created_at', 'desc')->get();
+        $challangeComments = array();
+        foreach($challanges as $challange){
+            $challangeComments[$challange->id] = Ccomment::where('challangeId', $challange->id)->get();
+        }
+        $challangeCommentsUsers = array();
+            foreach($challanges as $challange){
+                $challangeComments[$challange->id] = Ccomment::where('challangeId', $challange->id)->get();
+                foreach($challangeComments[$challange->id] as $comment){
+                    $challangeCommentsUsers[$challange->id][$comment->id] = User::find($comment->userId);
+                }
+            }
+        
         return view('pages/profile2')->with('posts', $posts)->with('user', $user)->with('postComments', $postComments)
-        ->with('postCommentsUsers', $postCommentsUsers);
+        ->with('postCommentsUsers', $postCommentsUsers)->with('challanges', $challanges)->with('challangeComments', $challangeComments)->with('challangeCommentsUsers', $challangeCommentsUsers);
         //return $user;
+        //return $challanges;
     }
 
     public function test(){

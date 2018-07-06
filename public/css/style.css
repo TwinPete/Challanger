@@ -312,6 +312,14 @@ body {
     display: none;
 }
 
+#info-wrapper{
+    display: none;
+}
+
+#infopage{
+    display: none;
+}
+
 .profileWrapper{
     margin-top: 23rem;
 }
@@ -353,6 +361,43 @@ body {
     border: solid 1px rgb(205, 205, 205);
     border-radius: 4px;
     outline: none;
+}
+
+.buttonWrapper{
+    text-align: center;
+    width: 100%;
+    height: auto;
+}
+
+
+.button{
+    display: inline-block;
+    text-align: center;
+    width: 25rem;
+    height: 5rem;
+    margin: 0 auto;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    padding: 1rem;
+    font-size: 2rem;
+    background-color: #fff;
+    border: solid 1px rgb(205, 205, 205);
+    border-radius: 4px;
+    outline: none;
+}
+
+.info{
+    justify-content: flex;
+    width: 70%;
+    height: 80rem;
+    margin-top: 4rem;
+    box-shadow: 1px 1px 30px 20px rgb(245, 245, 245);
+    border-radius: 10px;
+    animation: appear 0.35s ease-out normal backwards;
+}
+
+.info h1{
+    margin: 4rem;
 }
 
 #counter{
@@ -475,8 +520,7 @@ h1{
     padding: 2rem;
     padding-bottom: 4rem;
     background-color: #fff;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
 }
 
 .post .content .user{
@@ -525,13 +569,13 @@ h1{
 
 .card .content .reward{
     margin-top: 1.5rem;
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 500;
 }
 
 .card .content .whoWins{
     margin-top: 1.5rem;
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 500;
 }
 
@@ -540,7 +584,7 @@ h1{
     font-size: 2rem;
     font-weight: 500;
     padding-bottom:2rem;
-    border-bottom: solid 1px #999;
+
 }
 
 .card .content .deadline span{

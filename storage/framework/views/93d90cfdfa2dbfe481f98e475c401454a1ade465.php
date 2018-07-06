@@ -17,7 +17,7 @@
     </div>
 <div class="titles profileTitles">
     <ul>
-        <li>Info</li>
+        <li id="info">Info</li>
         <li id="posts" class="active">Posts</li>
         <li id="challanges" >Challanges</li>
         <li>Groups</li>
@@ -74,20 +74,24 @@
                 <script>
 
                     // Event Listener und Funktionen für Menu
-                    console.log("1");
+                    
                     var postElement = document.getElementById('posts');
                     postElement.addEventListener('click', posts);
-                    console.log("2");
-                    challangesInitialized = false;
+                    
+                    var challangesInitialized = false;
                     var challangeElement = document.getElementById('challanges');
                     challangeElement.addEventListener('click', challanges);
+
+                    var infoElement = document.getElementById('info');
+                    infoElement.addEventListener('click', infoShow);
+
 
                     function posts(){
 
                     // Alle anderen Menupunkte auf zurücksetzen
 
                     challangeElement.classList.remove("active");
-
+                    infoElement.classList.remove('active');
                     // Posts auf activ setzen
 
                     postElement.classList.add("active");
@@ -95,6 +99,7 @@
                     // Alle anderen wrapper ausblenden
                     console.log("3");
                     document.getElementById('challange-wrapper').style.display = "none";
+                    document.getElementById('info-wrapper').style.display = "none";
 
                     // Posts laden
                     console.log("4");
@@ -108,7 +113,7 @@
                     // Alle anderen Menupunkte auf zurücksetzen
 
                     postElement.classList.remove("active");
-                    
+                    infoElement.classList.remove('active');
                     // Challanges auf activ setzen
 
                     challangeElement.classList.add("active");
@@ -116,12 +121,15 @@
                     // Alle anderen wrapper ausblenden
                     console.log("5");
                     var postWrapper = document.getElementById('post-wrapper').style.display = "none";
+                    document.getElementById('info-wrapper').style.display = "none";
 
                     // Challanges laden
                     console.log("6");
                     var challangeWrapper = document.getElementById('challange-wrapper');
                     console.log(challangeWrapper);
                     challangeWrapper.style.display = "flex";
+
+                    // wenn Challanges bereits geladen wurden, lade nicht noch ein zweites Mal
                     if(!challangesInitialized){
                         initialize("Challanges");
                     }
@@ -132,6 +140,24 @@
                     
                     }
 
+                    function infoShow(){
+                        // Alle anderen Menupunkte auf zurücksetzen
+                        postElement.classList.remove("active");
+                        challangeElement.classList.remove("active");
+
+                        var postWrapper = document.getElementById('post-wrapper').style.display = "none";
+                        var challangeWrapper = document.getElementById('challange-wrapper').style.display = "none";
+
+                        // Challanges auf activ setzen
+
+                        var infoWrapper = document.getElementById('info-wrapper');
+                        var infopage = document.getElementById('infopage');
+
+                         info.classList.add("active");
+                         infoWrapper.style.display = "flex";
+                         infopage.style.display = "flex";
+
+                    }
                     
                     document.getElementById('line-1-Posts').addEventListener("change", function(){
                         if(document.getElementById('f').files[0].name != ""){
@@ -191,8 +217,11 @@
 
                     var postComments = <?php echo json_encode($postComments); ?>;
                     var postCommentsUsers = <?php echo json_encode($postCommentsUsers); ?>;
-                    console.log(postComments)
-                    
+                    console.log(postComments);
+
+                    var challanges = <?php echo json_encode($challanges->toArray()); ?>;
+                    var challangeComments = <?php echo json_encode($challangeComments); ?>;
+                    var challangeCommentsUsers = <?php echo json_encode($challangeCommentsUsers); ?>;
                     
                     // Userbar mit Werten belegen
 
@@ -213,7 +242,7 @@
                
                 initialize(loadType);
             });
-            function initialize(type){
+                    function initialize(type){
 
                 
 
@@ -309,9 +338,9 @@
                             console.log("Challanges werden geladen");
                             counter_3 = 0;
                             //content = challanges;
-                            content = posts;
-                            comments = postComments;
-                            commentUsers = postCommentsUsers;
+                            content = challanges;
+                            comments = challangeComments;
+                            commentUsers = challangeCommentsUsers;
                         }else{
                             console.log("Profile werden geladen");
                         }
@@ -341,7 +370,7 @@
                                     commentDropdowns[i].classList.add("cd" + i)
                                        commentDropdowns[i].addEventListener('click', function(){
                                           
-                                           var commentsNr = this.classList[1].charAt(2);
+                                           var commentsNr = this.classList[1].slice(2);
                                            var c = comments[commentsNr].classList;
                                            if(c.length <= 1){
                                                 this.style.transform = "rotate(0deg)";
@@ -451,9 +480,11 @@
                                                 "<l>" + content[counter_3].updated_at + "</l>" +
                                             "</div>" +
                                             "<h1>"+ content[counter_3].title +"</h1>" +
-                                            "<p class='posttext'> "+ content[counter_3].text +"</p>" +
-                                            "<p class='reward'>Reward: 500$</p>" +
+                                            "<p class='posttext'> "+ content[counter_3].description +"</p>" +
+                                            "<p class='reward'>Participants: 46</p>" +
+                                            "<p class='reward'>Reward: "+ content[counter_3].reward +"</p>" +
                                             "<p class='deadline'>Deadline:<span> 20.09.2018 at 15:30pm </span></p>" +
+                                            "<div class='buttonWrapper'><button id='challange-"+ content[counter_3].id +"-starter' class='button'> Start Challange </button></div>" +
                                             "<div class='options'>" +
                                                 "<div class='option'>" +
                                                         "<img src='/storage/res/like.svg' alt=''>" + 
@@ -497,6 +528,52 @@
                                                     "</div>" +
                                             "</div>" +
                                         "</div>"; 
+
+                                        // Challange start button initialisieren
+
+                                        
+                                            var startBtn = document.getElementById("challange-"+ content[counter_3].id +"-starter");
+                                            if(content[counter_3].isRunning){
+                                                startBtn.style.backgroundColor = "rgb(22, 176, 91)";
+                                                startBtn.style.color = "#fff";
+                                                startBtn.innerHTML = "Challange running";
+                                            }else{
+                                                // Event Listener für Challange Starter Button hinzufügen
+                                                        
+                                                startBtn.addEventListener('click', function(){
+                                                    var btnId = this.id.slice(10, -8);
+                                                    console.log("buttonId: " + btnId);
+                                            
+                                                    // Ajax call - Challange wird aktiviert
+
+                                                    xhr = new XMLHttpRequest();
+                                                    console.log(xhr);
+                                                
+                                                    xhr.open('GET', '/startChallange/'+btnId, true);
+                                                    xhr.onload = function(){
+                                                        if(this.status == 200){
+                                                            console.log(this.responseText);
+                                                        }else{
+                                                            console.log("nope");
+                                                        }
+                                                    
+                                                    }
+                                                    
+                                                    xhr.send();
+
+                                                    
+
+                                                    this.style.backgroundColor = "rgb(22, 176, 91)";
+                                                    this.style.color = "#fff";
+                                                    this.innerHTML = "Challange running";
+                                                });
+
+                                            }
+                                        
+
+                                        
+                                            
+                                        
                             }
 
 
@@ -589,8 +666,6 @@
 
                     <?php echo e(Form::textarea('reward', '', array("class" => "newPostText", "placeholder" => 'Reward'))); ?>
 
-                    <?php echo e(Form::textarea('whoWins', '', array("class" => "newPostText", "placeholder" => 'Who Wins'))); ?>
-
                     <?php echo e(Form::submit('Submit', array("class" => "button"))); ?>
 
                     <?php echo Form::close(); ?>
@@ -601,6 +676,11 @@
 
     </div>
     <div id="line-3-Challanges" class="line line-3"></div>
+</div>
+<div id="info-wrapper" class="wrapper profileWrapper">
+    <div id="infopage" class="info">
+        <h1>Info</h1>
+    </div>
 </div>
   
 <?php $__env->stopSection(); ?>

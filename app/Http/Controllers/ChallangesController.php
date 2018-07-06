@@ -40,8 +40,7 @@ class ChallangesController extends Controller
             'title' => 'required',
             'description' => 'required',
             'deadline' => 'required',
-            'reward' => 'required',
-            'whoWins' => 'required'
+            'reward' => 'required'
         ]);
 
         $challange = new Challange;
@@ -50,7 +49,7 @@ class ChallangesController extends Controller
         $challange->description = $request->input('description');
         $challange->deadline = $request->input('deadline');
         $challange->reward = $request->input('reward');
-        $challange->whoWins = $request->input('whoWins');
+        $challange->isRunning = false;
         $challange->save();
 
         return redirect('/profile2');
@@ -64,7 +63,8 @@ class ChallangesController extends Controller
      */
     public function show($id)
     {
-        //
+        $challange = Challange::find($id);
+        return $challange;
     }
 
     /**
@@ -87,7 +87,25 @@ class ChallangesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $challange = Challange::find($id);
+
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'deadline' => 'required',
+            'reward' => 'required',
+            'isRunning' => 'required'
+        ]);
+
+ 
+        $challange->userId = auth()->user()->id;
+        $challange->title = $request->input('title');
+        $challange->description = $request->input('description');
+        $challange->deadline = $request->input('deadline');
+        $challange->reward = $request->input('reward');
+        $challange->isRunning = $request->input('isRunning');
+        $challange->save();
+
     }
 
     /**
@@ -99,5 +117,13 @@ class ChallangesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function start($id)
+    {
+        $challange = Challange::find($id);
+        $challange->isRunning = true;
+        $challange->save();
+        return "jo, hat geklappt";
     }
 }
